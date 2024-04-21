@@ -1,5 +1,5 @@
 # Free-Form
-![[./brainstorm.png]]
+![](brainstorm.png)
 
 # Transcription
 
