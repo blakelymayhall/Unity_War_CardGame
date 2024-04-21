@@ -1,5 +1,5 @@
 # Free-Form
-![[brainstorm.png|600]]
+![[brainstorm.png]]
 
 # Transcription
 
