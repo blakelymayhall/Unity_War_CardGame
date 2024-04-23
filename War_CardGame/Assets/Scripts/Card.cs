@@ -10,13 +10,13 @@ public class Card : MonoBehaviour
         Hearts,
         Diamonds
     }
+    public Sprite faceDownSprite;
 
     private bool isFaceUp;
     private int cardRank;
     private CardSuit cardSuit;
     private Sprite faceUpSprite;
-    private Sprite faceDownSprite;
-
+   
     private SpriteRenderer spriteRenderer;
 
     // Start is called before the first frame update
@@ -24,24 +24,51 @@ public class Card : MonoBehaviour
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
 
-        // Randomize which suit
-        cardSuit = AssignSuit();
-        // Randomize which value
-        cardRank =  Random.Range(2, 14);
-        // Assign the sprites
-        spriteRenderer.sprite = // load the sprite from the folder by name
+        // For getting started, randomize which suit and rank
+        cardSuit = _Debug_AssignRandomSuit();
+        cardRank =  Random.Range(2, 15);
+
+        // Assign the sprite
+        faceUpSprite = AssignSprite(cardRank, cardSuit);
+        spriteRenderer.sprite = faceUpSprite;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
-    CardSuit AssignSuit()
+    CardSuit _Debug_AssignRandomSuit()
     {
         System.Array values = System.Enum.GetValues(typeof(CardSuit));
-        int randomIndex = UnityEngine.Random.Range(0, values.Length);
+        int randomIndex = Random.Range(0, values.Length);
         return (CardSuit)values.GetValue(randomIndex);
+    }
+
+    Sprite AssignSprite(int cardRank, CardSuit cardSuit)
+    {
+        // Build up card file name to load from assets
+        string cardFileName = "Assets/Sprites/Cards/card";
+        cardFileName += cardSuit.ToString();
+        switch (cardRank) {
+            case 11:
+                cardFileName += "J";
+                break;
+            case 12:
+                cardFileName += "Q";
+                break;
+            case 13:
+                cardFileName += "K";
+                break;
+            case 14:
+                cardFileName += "A";
+                break; 
+            default:
+                cardFileName += cardRank.ToString();
+                break;
+        }
+        Debug.Log(cardFileName + ".png");
+        return UnityEditor.AssetDatabase.LoadAssetAtPath<Sprite>(cardFileName + ".png");
     }
 }
