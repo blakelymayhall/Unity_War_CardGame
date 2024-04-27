@@ -5,20 +5,12 @@ using UnityEngine;
 public class Card : MonoBehaviour
 {
     //======================================================================
-    public enum CardSuit {
-        Clubs,
-        Spades,
-        Hearts,
-        Diamonds
-    }
     public Sprite faceDownSprite;
 
     //======================================================================
-    private bool isFaceUp;
-    private int cardRank;
-    private CardSuit cardSuit;
     private Sprite faceUpSprite;
-   
+    private CardData cardData = new();
+
     private SpriteRenderer spriteRenderer;
 
     //======================================================================
@@ -26,26 +18,18 @@ public class Card : MonoBehaviour
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
 
-        // For getting started, randomize which suit and rank
-        cardSuit = _Debug_AssignRandomSuit();
-        cardRank =  Random.Range(2, 15);
-
-        // Get the face up sprite
-        faceUpSprite = AssignFaceUpSprite(cardRank, cardSuit);
-       
-        // Init face down
-        isFaceUp = false;
+        faceUpSprite = AssignFaceUpSprite(cardData.cardRank, cardData.cardSuit);
         spriteRenderer.sprite = faceDownSprite;
     }
 
     //======================================================================
     void Update()
     {
-        if (isFaceUp && spriteRenderer.sprite != faceUpSprite)
+        if (cardData.isFaceUp && spriteRenderer.sprite != faceUpSprite)
         {
             spriteRenderer.sprite = faceUpSprite;
         }
-        else if(!isFaceUp && spriteRenderer.sprite != faceDownSprite)
+        else if (!cardData.isFaceUp && spriteRenderer.sprite != faceDownSprite)
         {
             spriteRenderer.sprite = faceDownSprite;
         }
@@ -54,15 +38,7 @@ public class Card : MonoBehaviour
     //======================================================================
     void OnMouseDown()
     {
-        isFaceUp = !isFaceUp;
-    }
-
-    //======================================================================
-    CardSuit _Debug_AssignRandomSuit()
-    {
-        System.Array values = System.Enum.GetValues(typeof(CardSuit));
-        int randomIndex = Random.Range(0, values.Length);
-        return (CardSuit)values.GetValue(randomIndex);
+        cardData.isFaceUp = !cardData.isFaceUp;
     }
 
     //======================================================================
@@ -79,6 +55,7 @@ public class Card : MonoBehaviour
             14 => "A",
             _ => cardRank.ToString(),
         };
-        return UnityEditor.AssetDatabase.LoadAssetAtPath<Sprite>(cardFileName + ".png");
+        return UnityEditor.AssetDatabase.LoadAssetAtPath<Sprite>(
+            cardFileName + ".png");
     }
 }
