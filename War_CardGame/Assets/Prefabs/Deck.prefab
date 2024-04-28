@@ -83,4 +83,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   max_cards: 0
-  number_of_cards: 0
+  cardPrefab: {fileID: 7774367745059958014, guid: 6679c7bf2e6e84ab6bc0206cacf6aa1d, type: 3}

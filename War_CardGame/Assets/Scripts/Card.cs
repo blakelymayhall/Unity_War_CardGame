@@ -6,11 +6,10 @@ public class Card : MonoBehaviour
 {
     //======================================================================
     public Sprite faceDownSprite;
+    public CardData cardData = new();
 
     //======================================================================
     private Sprite faceUpSprite;
-    private CardData cardData = new();
-
     private SpriteRenderer spriteRenderer;
 
     //======================================================================
