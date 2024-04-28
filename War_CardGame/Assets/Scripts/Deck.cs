@@ -28,6 +28,7 @@ public class Deck : MonoBehaviour
 
         _Debug_LoadCards(max_cards);
         Shuffle();
+        _Debug_PrintDeck();
     }
 
     //======================================================================
@@ -39,18 +40,7 @@ public class Deck : MonoBehaviour
     //======================================================================
     void OnMouseDown()
     {
-        bool canPlayCard = playedCard == null || playedCard.cardData.isFaceUp;
-        if (canPlayCard)
-        {
-            if (playedCard != null)
-            {
-                Destroy(playedCard.gameObject);
-            }
-
-            playedCard = Instantiate(cardPrefab,
-                transform.position + playedCardOffset,
-                Quaternion.identity).GetComponent<Card>();
-        }
+        PlayCard();
     }
 
     //======================================================================
@@ -91,6 +81,30 @@ public class Deck : MonoBehaviour
             CardData value = cards[k];
             cards[k] = cards[n];
             cards[n] = value;
+        }
+    }
+
+    //======================================================================
+    void PlayCard()
+    {
+        bool canPlayCard =
+            playedCard == null ||
+            playedCard.cardData.isFaceUp &&
+            cards.Any();
+
+        if (canPlayCard)
+        {
+            if (playedCard != null)
+            {
+                Destroy(playedCard.gameObject);
+            }
+
+            playedCard = Instantiate(cardPrefab,
+                transform.position + playedCardOffset,
+                Quaternion.identity).GetComponent<Card>();
+            playedCard.cardData = cards.Last();
+
+            cards.RemoveAt(cards.Count - 1);
         }
     }
 }
