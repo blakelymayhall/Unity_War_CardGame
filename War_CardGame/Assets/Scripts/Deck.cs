@@ -35,6 +35,7 @@ public class Deck : MonoBehaviour
     }
 
     //======================================================================
+    // Loads random cards into the deck
     void _Debug_LoadCards(int max_cards)
     {
         for (int ii = 0; ii < max_cards; ii++)
