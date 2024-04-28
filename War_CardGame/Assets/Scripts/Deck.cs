@@ -7,14 +7,23 @@ public class Deck : MonoBehaviour
 {
     //======================================================================
     public int max_cards;
-
+    public GameObject cardPrefab;
     public List<CardData> cards = new();
-    //======================================================================
 
+    //======================================================================
+    private Vector3 playedCardOffset;
+    private SpriteRenderer spriteRenderer;
+    private Card playedCard;
 
     //======================================================================
     void Start()
     {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+
+        playedCardOffset = new Vector3(
+            2f*spriteRenderer.sprite.bounds.size.x,
+            0,
+            0);
         max_cards = 3;
 
         _Debug_LoadCards(max_cards);
@@ -30,7 +39,18 @@ public class Deck : MonoBehaviour
     //======================================================================
     void OnMouseDown()
     {
-        Debug.Log("Clicked on Deck");
+        bool canPlayCard = playedCard == null || playedCard.cardData.isFaceUp;
+        if (canPlayCard)
+        {
+            if (playedCard != null)
+            {
+                Destroy(playedCard.gameObject);
+            }
+
+            playedCard = Instantiate(cardPrefab,
+                transform.position + playedCardOffset,
+                Quaternion.identity).GetComponent<Card>();
+        }
     }
 
     //======================================================================
@@ -62,7 +82,6 @@ public class Deck : MonoBehaviour
     //======================================================================
     void Shuffle()
     {
-        _Debug_PrintDeck();
         System.Random random = new System.Random();
         int n = cards.Count;
         while (n > 1)
@@ -73,6 +92,5 @@ public class Deck : MonoBehaviour
             cards[k] = cards[n];
             cards[n] = value;
         }
-        _Debug_PrintDeck();
     }
 }
