@@ -7,7 +7,6 @@ public class Deck : MonoBehaviour
 {
     //======================================================================
     public int max_cards;
-    public int number_of_cards;
 
     public List<CardData> cards = new();
     //======================================================================
@@ -17,9 +16,9 @@ public class Deck : MonoBehaviour
     void Start()
     {
         max_cards = 3;
-        number_of_cards = max_cards;
 
         _Debug_LoadCards(max_cards);
+        Shuffle();
     }
 
     //======================================================================
@@ -47,5 +46,33 @@ public class Deck : MonoBehaviour
             }
             cards.Add(card);
         }
+    }
+
+    //======================================================================
+    void _Debug_PrintDeck()
+    {
+        foreach (CardData card in cards)
+        {
+            Debug.Log(card.cardSuit);
+            Debug.Log(card.cardRank);
+            Debug.Log("--");
+        }
+    }
+
+    //======================================================================
+    void Shuffle()
+    {
+        _Debug_PrintDeck();
+        System.Random random = new System.Random();
+        int n = cards.Count;
+        while (n > 1)
+        {
+            n--;
+            int k = random.Next(n + 1);
+            CardData value = cards[k];
+            cards[k] = cards[n];
+            cards[n] = value;
+        }
+        _Debug_PrintDeck();
     }
 }
