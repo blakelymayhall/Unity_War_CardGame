@@ -41,6 +41,11 @@ public class Deck : MonoBehaviour
     void OnMouseDown()
     {
         PlayCard();
+
+        if (!cards.Any())
+        {
+            spriteRenderer.sprite = null;
+        }
     }
 
     //======================================================================
