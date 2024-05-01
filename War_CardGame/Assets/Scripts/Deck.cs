@@ -106,7 +106,9 @@ public class Deck : MonoBehaviour
 
             playedCard = Instantiate(cardPrefab,
                 transform.position + playedCardOffset,
-                Quaternion.identity).GetComponent<Card>();
+                Quaternion.identity,
+                GetComponent<Transform>()).GetComponent<Card>();
+            playedCard.name = "playedCard";
             playedCard.cardData = cards.Last();
 
             cards.RemoveAt(cards.Count - 1);
