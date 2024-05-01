@@ -11,12 +11,12 @@ public class Deck : MonoBehaviour
     public List<CardData> cards = new();
 
     //======================================================================
-    private Vector3 playedCardOffset;
-    private SpriteRenderer spriteRenderer;
-    private Card playedCard;
+    protected Vector3 playedCardOffset;
+    protected SpriteRenderer spriteRenderer;
+    protected Card playedCard;
 
     //======================================================================
-    void Start()
+    public virtual void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
 
@@ -24,7 +24,6 @@ public class Deck : MonoBehaviour
             2f*spriteRenderer.sprite.bounds.size.x,
             0,
             0);
-        max_cards = 3;
 
         _Debug_LoadCards(max_cards);
         Shuffle();
@@ -35,17 +34,6 @@ public class Deck : MonoBehaviour
     void Update()
     {
 
-    }
-
-    //======================================================================
-    void OnMouseDown()
-    {
-        PlayCard();
-
-        if (!cards.Any())
-        {
-            spriteRenderer.sprite = null;
-        }
     }
 
     //======================================================================
@@ -75,7 +63,7 @@ public class Deck : MonoBehaviour
     }
 
     //======================================================================
-    void Shuffle()
+    public void Shuffle()
     {
         System.Random random = new System.Random();
         int n = cards.Count;
@@ -90,7 +78,7 @@ public class Deck : MonoBehaviour
     }
 
     //======================================================================
-    void PlayCard()
+    public void PlayCard()
     {
         bool canPlayCard =
             playedCard == null ||
@@ -104,14 +92,24 @@ public class Deck : MonoBehaviour
                 Destroy(playedCard.gameObject);
             }
 
-            playedCard = Instantiate(cardPrefab,
-                transform.position + playedCardOffset,
-                Quaternion.identity,
-                GetComponent<Transform>()).GetComponent<Card>();
-            playedCard.name = "playedCard";
-            playedCard.cardData = cards.Last();
-
+            InstantiateCard();
             cards.RemoveAt(cards.Count - 1);
+            if (!cards.Any())
+            {
+                spriteRenderer.sprite = null;
+            }
         }
+    }
+
+    //======================================================================
+    public virtual void InstantiateCard()
+    {
+        playedCard = Instantiate(cardPrefab,
+            transform.position + playedCardOffset,
+            Quaternion.identity,
+            GetComponent<Transform>()).GetComponent<Card>();
+        playedCard.name = "playedCard";
+        playedCard.cardData = cards.Last();
+        playedCard.isCOM = true;
     }
 }

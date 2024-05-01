@@ -7,10 +7,12 @@ public class Card : MonoBehaviour
     //======================================================================
     public Sprite faceDownSprite;
     public CardData cardData = new();
+    public bool isCOM;
 
     //======================================================================
     private Sprite faceUpSprite;
     private SpriteRenderer spriteRenderer;
+    private Deck COM_deck;
 
     //======================================================================
     void Start()
@@ -19,6 +21,8 @@ public class Card : MonoBehaviour
 
         faceUpSprite = AssignFaceUpSprite(cardData.cardRank, cardData.cardSuit);
         spriteRenderer.sprite = faceDownSprite;
+
+        COM_deck = GameObject.Find("COM").GetComponentInChildren<Deck>();
     }
 
     //======================================================================
@@ -28,16 +32,20 @@ public class Card : MonoBehaviour
         {
             spriteRenderer.sprite = faceUpSprite;
         }
-        else if (!cardData.isFaceUp && spriteRenderer.sprite != faceDownSprite)
-        {
-            spriteRenderer.sprite = faceDownSprite;
-        }
     }
 
     //======================================================================
     void OnMouseDown()
     {
-        cardData.isFaceUp = !cardData.isFaceUp;
+        if (isCOM)
+        {
+            // Do this so they can share a script
+            // Don't want to be able to click on COM's cards
+            return;
+        }
+
+        cardData.isFaceUp = true;
+        COM_deck.GetComponentInChildren<Card>().cardData.isFaceUp = true;
     }
 
     //======================================================================
