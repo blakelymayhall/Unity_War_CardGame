@@ -26,12 +26,7 @@ public class PlayerDeck : Deck
     //======================================================================
     public override void InstantiateCard()
     {
-        playedCard = Instantiate(cardPrefab,
-            transform.position + playedCardOffset,
-            Quaternion.identity,
-            GetComponent<Transform>()).GetComponent<Card>();
-        playedCard.name = "playedCard";
-        playedCard.cardData = cards.Last();
+        base.InstantiateCard();
         playedCard.isCOM = false;
     }
 }
