@@ -13,7 +13,7 @@ public class CardData
     public CardData()
     {
         // For getting started, randomize which suit and rank
-        cardSuit = _Debug_AssignRandomSuit();
+        cardSuit = AssignRandomSuit();
         Random rand = new();
         cardRank = rand.Next(2, 15);
 
@@ -22,7 +22,7 @@ public class CardData
     }
 
     //======================================================================
-    CardSuit _Debug_AssignRandomSuit()
+    CardSuit AssignRandomSuit()
     {
         System.Array values = System.Enum.GetValues(typeof(CardSuit));
         Random rand = new();

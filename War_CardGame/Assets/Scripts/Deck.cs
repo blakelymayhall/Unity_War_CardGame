@@ -27,7 +27,7 @@ public class Deck : MonoBehaviour
         opponent = players.FirstOrDefault(p => p != deck_owner);
         spriteRenderer = GetComponent<SpriteRenderer>();
 
-        _Debug_LoadCards(max_cards);
+        LoadCards();
         Shuffle();
         _Debug_PrintDeck(cards);
     }
@@ -50,6 +50,27 @@ public class Deck : MonoBehaviour
                 card = new();
             }
             cards.Add(card);
+        }
+    }
+
+    //======================================================================
+    void LoadCards(List<CardData> cards_to_load = null)
+    {
+        // If didn't get cards to load, load standard 52 card deck
+        // todo -- is this terrible? This works and its short
+        if (cards_to_load == null)
+        {
+            const int MAX_CARDS = 52;
+            for (int ii = 0; ii < MAX_CARDS; ii++)
+            {
+                CardData card = new();
+                while (cards.Any(card_in_deck => card == card_in_deck))
+                {
+                    card = new();
+                }
+                cards.Add(card);
+            }
+            return;
         }
     }
 
