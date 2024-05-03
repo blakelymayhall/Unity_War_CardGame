@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using static UnityEditor.Experimental.GraphView.GraphView;
 
@@ -40,28 +41,34 @@ public class Card : MonoBehaviour
     //======================================================================
     void OnMouseDown()
     {
-        if (isCOM)
+        Debug.Log(Player_deck.playedCards.Last().cardData.cardRank);
+        bool ignore_click =
+            isCOM ||
+            cardData.isFaceUp ||
+            cardData != Player_deck.playedCards.Last().cardData;
+        if (ignore_click)
         {
-            // Do this so they can share a script
-            // Don't want to be able to click on COM's cards
             return;
         }
 
-        cardData.isFaceUp = true;
-        COM_deck.GetComponentInChildren<Card>().cardData.isFaceUp = true;
+        Player_deck.playedCards.ForEach(c => c.cardData.isFaceUp = true);
+        COM_deck.playedCards.ForEach(c => c.cardData.isFaceUp = true);
 
         Player player = Player_deck.GetComponentInParent<Player>();
         COM com = COM_deck.GetComponentInParent<COM>();
-        int COM_card_rank =
-            COM_deck.GetComponentInChildren<Card>().cardData.cardRank;
 
-        if (cardData.cardRank > COM_card_rank)
+        int player_card_rank =
+            Player_deck.playedCards.Last().cardData.cardRank;
+        int COM_card_rank =
+            COM_deck.playedCards.Last().cardData.cardRank;
+
+        if (player_card_rank > COM_card_rank)
         {
             player.handOutcome = HandOutcomes.Win;
             com.handOutcome = HandOutcomes.Lose;
             Debug.Log("Player Wins");
         }
-        else if (cardData.cardRank == COM_card_rank)
+        else if (player_card_rank == COM_card_rank)
         {
             player.handOutcome = HandOutcomes.Draw;
             com.handOutcome = HandOutcomes.Draw;

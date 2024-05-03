@@ -41,7 +41,7 @@ public class CardData
     public static bool operator !=(CardData card1, CardData card2)
     {
         return card1.cardRank != card2.cardRank ||
-            card1.cardSuit == card2.cardSuit;
+            card1.cardSuit != card2.cardSuit;
     }
 
     //======================================================================
