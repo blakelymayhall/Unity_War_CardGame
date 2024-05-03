@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class Card : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class Card : MonoBehaviour
     private Sprite faceUpSprite;
     private SpriteRenderer spriteRenderer;
     private Deck COM_deck;
+    private Deck Player_deck;
 
     //======================================================================
     void Start()
@@ -23,6 +25,7 @@ public class Card : MonoBehaviour
         spriteRenderer.sprite = faceDownSprite;
 
         COM_deck = GameObject.Find("COM").GetComponentInChildren<Deck>();
+        Player_deck = GameObject.Find("Player").GetComponentInChildren<Deck>();
     }
 
     //======================================================================
@@ -46,6 +49,30 @@ public class Card : MonoBehaviour
 
         cardData.isFaceUp = true;
         COM_deck.GetComponentInChildren<Card>().cardData.isFaceUp = true;
+
+        Player player = Player_deck.GetComponentInParent<Player>();
+        COM com = COM_deck.GetComponentInParent<COM>();
+        int COM_card_rank =
+            COM_deck.GetComponentInChildren<Card>().cardData.cardRank;
+
+        if (cardData.cardRank > COM_card_rank)
+        {
+            player.handOutcome = HandOutcomes.Win;
+            com.handOutcome = HandOutcomes.Lose;
+            Debug.Log("Player Wins");
+        }
+        else if (cardData.cardRank == COM_card_rank)
+        {
+            player.handOutcome = HandOutcomes.Draw;
+            com.handOutcome = HandOutcomes.Draw;
+            Debug.Log("Draw");
+        }
+        else 
+        {
+            player.handOutcome = HandOutcomes.Lose;
+            com.handOutcome = HandOutcomes.Win;
+            Debug.Log("COM Win");
+        }
     }
 
     //======================================================================
