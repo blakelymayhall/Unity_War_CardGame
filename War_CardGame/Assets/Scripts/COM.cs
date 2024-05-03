@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class COM : Player
 {
     //======================================================================
-    public HandOutcomes handOutcome = HandOutcomes.NoCardsPlayed;
-    public string playerName = "Human";
-
+    void Start()
+    {
+        playerName = "COM";
+    }
 }

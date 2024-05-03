@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using UnityEngine;
 
@@ -9,15 +10,20 @@ public class Deck : MonoBehaviour
     public int max_cards;
     public GameObject cardPrefab;
     public List<CardData> cards = new();
+    public List<CardData> burntCards = new();
 
     //======================================================================
     protected Vector3 playedCardOffset;
     protected SpriteRenderer spriteRenderer;
     protected Card playedCard;
-
+    protected Player deck_owner;
+    protected Player opponent;
     //======================================================================
     public virtual void Start()
     {
+        deck_owner = GetComponentInParent<Player>();
+        var players = FindObjectsOfType<Player>();
+        opponent = players.FirstOrDefault(p => p != deck_owner);
         spriteRenderer = GetComponent<SpriteRenderer>();
 
         playedCardOffset = new Vector3(
@@ -27,7 +33,7 @@ public class Deck : MonoBehaviour
 
         _Debug_LoadCards(max_cards);
         Shuffle();
-        _Debug_PrintDeck();
+        _Debug_PrintDeck(cards);
     }
 
     //======================================================================
@@ -52,7 +58,7 @@ public class Deck : MonoBehaviour
     }
 
     //======================================================================
-    void _Debug_PrintDeck()
+    void _Debug_PrintDeck(List<CardData> cards)
     {
         foreach (CardData card in cards)
         {
@@ -89,6 +95,14 @@ public class Deck : MonoBehaviour
         {
             if (playedCard != null)
             {
+                if (deck_owner.handOutcome == HandOutcomes.Win)
+                {
+                    burntCards.Add(playedCard.cardData);
+                    burntCards.Add(
+                        opponent.GetComponentInChildren<Deck>().
+                        playedCard.cardData);
+                }
+
                 Destroy(playedCard.gameObject);
             }
 
@@ -98,6 +112,9 @@ public class Deck : MonoBehaviour
             {
                 spriteRenderer.sprite = null;
             }
+
+            Debug.Log("Burn Cards\n\n");
+            _Debug_PrintDeck(burntCards);
         }
     }
 
