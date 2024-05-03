@@ -9,15 +9,16 @@ public class Deck : MonoBehaviour
     //======================================================================
     public int max_cards;
     public GameObject cardPrefab;
+    public List<Card> playedCards = new();
     public List<CardData> cards = new();
     public List<CardData> burntCards = new();
 
     //======================================================================
     protected Vector3 playedCardOffset;
     protected SpriteRenderer spriteRenderer;
-    protected Card playedCard;
     protected Player deck_owner;
     protected Player opponent;
+
     //======================================================================
     public virtual void Start()
     {
@@ -25,11 +26,6 @@ public class Deck : MonoBehaviour
         var players = FindObjectsOfType<Player>();
         opponent = players.FirstOrDefault(p => p != deck_owner);
         spriteRenderer = GetComponent<SpriteRenderer>();
-
-        playedCardOffset = new Vector3(
-            2f*spriteRenderer.sprite.bounds.size.x,
-            0,
-            0);
 
         _Debug_LoadCards(max_cards);
         Shuffle();
@@ -87,31 +83,46 @@ public class Deck : MonoBehaviour
     public void PlayCard()
     {
         bool canPlayCard =
-            playedCard == null ||
-            playedCard.cardData.isFaceUp &&
+            playedCards.Count() == 0 ||
+            playedCards.Last().cardData.isFaceUp &&
             cards.Any();
 
         if (canPlayCard)
         {
-            if (playedCard != null)
+            if (playedCards.Count() != 0)
             {
                 if (deck_owner.handOutcome == HandOutcomes.Win)
                 {
-                    burntCards.Add(playedCard.cardData);
-                    burntCards.Add(
-                        opponent.GetComponentInChildren<Deck>().
-                        playedCard.cardData);
+                    List<Card> cardsToBurn =
+                        playedCards.Concat(
+                        opponent.GetComponentInChildren<Deck>().playedCards).
+                        ToList();
+                    foreach (Card card in cardsToBurn)
+                    {
+                        burntCards.Add(card.cardData);
+                    }
                 }
 
-                Destroy(playedCard.gameObject);
+                if (deck_owner.handOutcome == HandOutcomes.Win ||
+                    deck_owner.handOutcome == HandOutcomes.Lose)
+                {
+                    foreach (Card card in playedCards)
+                    {
+                        Destroy(card.gameObject);
+                    }
+                    playedCards.Clear();
+                }
+
+                if (deck_owner.handOutcome == HandOutcomes.Draw &&
+                    cards.Count > 3)
+                {
+                    InstantiateCard();
+                    InstantiateCard();
+                    InstantiateCard();
+                }
             }
 
             InstantiateCard();
-            cards.RemoveAt(cards.Count - 1);
-            if (!cards.Any())
-            {
-                spriteRenderer.sprite = null;
-            }
 
             Debug.Log("Burn Cards\n\n");
             _Debug_PrintDeck(burntCards);
@@ -121,12 +132,33 @@ public class Deck : MonoBehaviour
     //======================================================================
     public virtual void InstantiateCard()
     {
-        playedCard = Instantiate(cardPrefab,
+        if (playedCards.Count == 0)
+        {
+            playedCardOffset = new Vector3(
+                2f * spriteRenderer.sprite.bounds.size.x,
+                0,
+                0);
+        }
+        else
+        {
+            playedCardOffset += new Vector3(
+                0.25f * spriteRenderer.sprite.bounds.size.x,
+                0,
+                -1);
+        }
+
+        playedCards.Add(Instantiate(cardPrefab,
             transform.position + playedCardOffset,
             Quaternion.identity,
-            GetComponent<Transform>()).GetComponent<Card>();
-        playedCard.name = "playedCard";
-        playedCard.cardData = cards.Last();
-        playedCard.isCOM = true;
+            GetComponent<Transform>()).GetComponent<Card>());
+        playedCards.Last().name = "playedCard";
+        playedCards.Last().cardData = cards.Last();
+        playedCards.Last().isCOM = true;
+
+        cards.RemoveAt(cards.Count - 1);
+        if (!cards.Any())
+        {
+            spriteRenderer.sprite = null;
+        }
     }
 }

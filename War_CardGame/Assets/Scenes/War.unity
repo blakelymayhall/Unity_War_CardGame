@@ -132,7 +132,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 291015392}
-  - component: {fileID: 291015391}
+  - component: {fileID: 291015393}
   m_Layer: 0
   m_Name: COM
   m_TagString: Untagged
@@ -140,18 +140,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &291015391
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 291015390}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7942f847074624b1ab50c6c9abe607db, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &291015392
 Transform:
   m_ObjectHideFlags: 0
@@ -168,6 +156,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &291015393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 291015390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9a86a18f51dc4ed5a19562ea12325c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  handOutcome: 3
+  playerName: Human
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -305,6 +307,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7942f847074624b1ab50c6c9abe607db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  handOutcome: 3
+  playerName: Human
 --- !u!1 &1414348880 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5870113354896512213, guid: 0479b939b7ecb4bc484e25e8305c17ab, type: 3}
@@ -327,8 +331,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 580d362c4dbd44b6083f8f51a459c45e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  max_cards: 3
+  max_cards: 20
   cardPrefab: {fileID: 7774367745059958014, guid: 6679c7bf2e6e84ab6bc0206cacf6aa1d, type: 3}
+  playedCards: []
 --- !u!4 &1608148162 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 170847821575989100, guid: 0479b939b7ecb4bc484e25e8305c17ab, type: 3}
@@ -417,7 +422,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -2495474540489033110, guid: 0479b939b7ecb4bc484e25e8305c17ab, type: 3}
       propertyPath: max_cards
-      value: 3
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: -2495474540489033110, guid: 0479b939b7ecb4bc484e25e8305c17ab, type: 3}
       propertyPath: cardPrefab
