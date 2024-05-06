@@ -27,15 +27,10 @@ public class Deck : MonoBehaviour
         opponent = players.FirstOrDefault(p => p != deck_owner);
         spriteRenderer = GetComponent<SpriteRenderer>();
 
-        LoadCards();
+        //LoadCards();
+        _Debug_LoadCards(max_cards);
         Shuffle();
         _Debug_PrintDeck(cards);
-    }
-
-    //======================================================================
-    void Update()
-    {
-
     }
 
     //======================================================================
@@ -103,50 +98,63 @@ public class Deck : MonoBehaviour
     //======================================================================
     public void PlayCard()
     {
-        bool canPlayCard =
-            playedCards.Count() == 0 ||
-            playedCards.Last().cardData.isFaceUp &&
-            cards.Any();
+        bool noCardsPlayed = playedCards.Count() == 0;
+        if (noCardsPlayed)
+        {
+            InstantiateCard();
+            return;
+        }
 
+        bool canPlayCard = playedCards.Last().cardData.isFaceUp && cards.Any();
         if (canPlayCard)
         {
-            if (playedCards.Count() != 0)
-            {
-                if (deck_owner.handOutcome == HandOutcomes.Win)
-                {
-                    List<Card> cardsToBurn =
-                        playedCards.Concat(
-                        opponent.GetComponentInChildren<Deck>().playedCards).
-                        ToList();
-                    foreach (Card card in cardsToBurn)
-                    {
-                        burntCards.Add(card.cardData);
-                    }
-                }
-
-                if (deck_owner.handOutcome == HandOutcomes.Win ||
-                    deck_owner.handOutcome == HandOutcomes.Lose)
-                {
-                    foreach (Card card in playedCards)
-                    {
-                        Destroy(card.gameObject);
-                    }
-                    playedCards.Clear();
-                }
-
-                if (deck_owner.handOutcome == HandOutcomes.Draw &&
-                    cards.Count > 3)
-                {
-                    InstantiateCard();
-                    InstantiateCard();
-                    InstantiateCard();
-                }
-            }
-
+            HandlePreviousHandResult();
             InstantiateCard();
+        }
 
-            Debug.Log("Burn Cards\n\n");
-            _Debug_PrintDeck(burntCards);
+        Debug.Log("Burn Cards\n\n");
+        _Debug_PrintDeck(burntCards);
+    }
+
+    //======================================================================
+    public void HandlePreviousHandResult()
+    {
+        // Handle Draw 
+        if (deck_owner.PlayerDraw())
+        {
+            if (cards.Count > 3)
+            {
+                InstantiateCard();
+                InstantiateCard();
+                InstantiateCard();
+            }
+            else
+            {
+                // player lose
+                Debug.Log("Player Lose");
+            }
+            return;
+        }
+
+        // Handle Win
+        if (deck_owner.PlayerWin())
+        {
+            List<Card> cardsToBurn = playedCards.Concat(
+                opponent.GetComponentInChildren<Deck>().playedCards).ToList();
+            foreach (Card card in cardsToBurn)
+            {
+                burntCards.Add(card.cardData);
+            }
+        }
+
+        // Clear Played Cards
+        if (!deck_owner.PlayerDraw())
+        {
+            foreach (Card card in playedCards)
+            {
+                Destroy(card.gameObject);
+            }
+            playedCards.Clear();
         }
     }
 
