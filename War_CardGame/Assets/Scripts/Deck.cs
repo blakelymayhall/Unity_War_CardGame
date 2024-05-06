@@ -30,7 +30,6 @@ public class Deck : MonoBehaviour
         //LoadCards();
         _Debug_LoadCards(max_cards);
         Shuffle();
-        _Debug_PrintDeck(cards);
     }
 
     //======================================================================
@@ -105,39 +104,42 @@ public class Deck : MonoBehaviour
             return;
         }
 
-        bool canPlayCard = playedCards.Last().cardData.isFaceUp && cards.Any();
+        bool outOfCards = !cards.Any();
+        if (outOfCards)
+        {
+            HandleRoundLost();
+        }
+
+        bool canPlayCard = playedCards.Last().cardData.isFaceUp;
         if (canPlayCard)
         {
             HandlePreviousHandResult();
             InstantiateCard();
         }
-
-        Debug.Log("Burn Cards\n\n");
-        _Debug_PrintDeck(burntCards);
     }
 
     //======================================================================
     public void HandlePreviousHandResult()
     {
         // Handle Draw 
-        if (deck_owner.PlayerDraw())
+        if (deck_owner.PlayerDrawHand())
         {
             if (cards.Count > 3)
             {
+                // WAR!
                 InstantiateCard();
                 InstantiateCard();
                 InstantiateCard();
             }
             else
             {
-                // player lose
-                Debug.Log("Player Lose");
+                HandleRoundLost();
             }
             return;
         }
 
         // Handle Win
-        if (deck_owner.PlayerWin())
+        if (deck_owner.PlayerWinHand())
         {
             List<Card> cardsToBurn = playedCards.Concat(
                 opponent.GetComponentInChildren<Deck>().playedCards).ToList();
@@ -148,7 +150,7 @@ public class Deck : MonoBehaviour
         }
 
         // Clear Played Cards
-        if (!deck_owner.PlayerDraw())
+        if (!deck_owner.PlayerDrawHand())
         {
             foreach (Card card in playedCards)
             {
@@ -159,9 +161,23 @@ public class Deck : MonoBehaviour
     }
 
     //======================================================================
+    public void HandleRoundLost()
+    {
+        deck_owner.roundOutcome = RoundOutcomes.Lose;
+        opponent.roundOutcome = RoundOutcomes.Win;
+
+        if (cards.Count + burntCards.Count == 0)
+        {
+            deck_owner.GameOutcome = GameOutcomes.Lose;
+            opponent.GameOutcome = GameOutcomes.Win;
+        }
+    }
+
+    //======================================================================
     public virtual void InstantiateCard()
     {
-        if (playedCards.Count == 0)
+        bool noCardsPlayed = playedCards.Count() == 0;
+        if (noCardsPlayed)
         {
             playedCardOffset = new Vector3(
                 2f * spriteRenderer.sprite.bounds.size.x,
