@@ -96,7 +96,7 @@ public class Deck : MonoBehaviour
     }
 
     //======================================================================
-    public void PlayCard()
+    public void DrawCard()
     {
         bool noCardsPlayed = playedCards.Count() == 0;
         if (noCardsPlayed)
@@ -106,9 +106,23 @@ public class Deck : MonoBehaviour
         }
 
         bool canPlayCard = playedCards.Last().cardData.isFaceUp && cards.Any();
-        if (canPlayCard)
+        if (canPlayCard && deck_owner.PlayerDraw())
         {
-            HandlePreviousHandResult();
+            if (cards.Count > 2)
+            {
+                InstantiateCard();
+                InstantiateCard();
+
+            }
+            else
+            {
+                // player lose
+                Debug.Log("Player Lose");
+            }
+        }
+        else if (canPlayCard && !deck_owner.PlayerDraw())
+        {
+            AddCardsToBurnPile();
             InstantiateCard();
         }
 
@@ -117,25 +131,8 @@ public class Deck : MonoBehaviour
     }
 
     //======================================================================
-    public void HandlePreviousHandResult()
+    public void AddCardsToBurnPile() 
     {
-        // Handle Draw 
-        if (deck_owner.PlayerDraw())
-        {
-            if (cards.Count > 3)
-            {
-                InstantiateCard();
-                InstantiateCard();
-                InstantiateCard();
-            }
-            else
-            {
-                // player lose
-                Debug.Log("Player Lose");
-            }
-            return;
-        }
-
         // Handle Win
         if (deck_owner.PlayerWin())
         {
@@ -161,7 +158,8 @@ public class Deck : MonoBehaviour
     //======================================================================
     public virtual void InstantiateCard()
     {
-        if (playedCards.Count == 0)
+        bool noCardsPlayed = playedCards.Count() == 0;
+        if (noCardsPlayed)
         {
             playedCardOffset = new Vector3(
                 2f * spriteRenderer.sprite.bounds.size.x,

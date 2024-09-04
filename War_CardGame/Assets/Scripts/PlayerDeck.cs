@@ -17,8 +17,8 @@ public class PlayerDeck : Deck
     //======================================================================
     void OnMouseDown()
     {
-        base.PlayCard();
-        COM_deck.PlayCard();
+        base.DrawCard();
+        COM_deck.DrawCard();
 
         Debug.Log("Remaining Cards " + cards.Count);
     }

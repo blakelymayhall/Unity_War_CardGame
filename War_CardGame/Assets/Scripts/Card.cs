@@ -51,8 +51,14 @@ public class Card : MonoBehaviour
             return;
         }
 
-        Player_deck.playedCards.ForEach(c => c.cardData.isFaceUp = true);
-        COM_deck.playedCards.ForEach(c => c.cardData.isFaceUp = true);
+        PlayCard();
+    }
+
+    //======================================================================
+    public void PlayCard() 
+    {
+        Player_deck.playedCards.Last().cardData.isFaceUp = true;
+        COM_deck.playedCards.Last().cardData.isFaceUp = true;
 
         Player player = Player_deck.GetComponentInParent<Player>();
         COM com = COM_deck.GetComponentInParent<COM>();
