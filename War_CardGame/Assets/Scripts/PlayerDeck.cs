@@ -24,7 +24,7 @@ public class PlayerDeck : Deck
     }
 
     //======================================================================
-    public override void InstantiateCard(bool isDraw = false)
+    public override void InstantiateCard()
     {
         base.InstantiateCard();
         playedCards.Last().isCOM = false;

@@ -111,7 +111,7 @@ public class Deck : MonoBehaviour
             if (cards.Count > 2)
             {
                 InstantiateCard();
-                InstantiateCard(true);
+                InstantiateCard();
 
             }
             else
@@ -156,7 +156,7 @@ public class Deck : MonoBehaviour
     }
 
     //======================================================================
-    public virtual void InstantiateCard(bool isDraw = false)
+    public virtual void InstantiateCard()
     {
         bool noCardsPlayed = playedCards.Count() == 0;
         if (noCardsPlayed)
