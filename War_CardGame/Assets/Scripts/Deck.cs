@@ -11,18 +11,19 @@ public class Deck : MonoBehaviour
     public GameObject cardPrefab;
     public List<Card> playedCards = new();
     public List<CardData> cards = new();
-    public List<CardData> burntCards = new();
 
     //======================================================================
     protected Vector3 playedCardOffset;
     protected SpriteRenderer spriteRenderer;
     protected Player deck_owner;
     protected Player opponent;
+    protected BurntDeck burnDeck; 
 
     //======================================================================
     public virtual void Start()
     {
         deck_owner = GetComponentInParent<Player>();
+        burnDeck = deck_owner.transform.Find("BurntDeck").gameObject.GetComponent<BurntDeck>();
         var players = FindObjectsOfType<Player>();
         opponent = players.FirstOrDefault(p => p != deck_owner);
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -125,23 +126,17 @@ public class Deck : MonoBehaviour
             AddCardsToBurnPile();
             InstantiateCard();
         }
-
-        Debug.Log("Burn Cards\n\n");
-        _Debug_PrintDeck(burntCards);
     }
 
     //======================================================================
-    public void AddCardsToBurnPile() 
+    public void AddCardsToBurnPile()
     {
         // Handle Win
         if (deck_owner.PlayerWin())
         {
             List<Card> cardsToBurn = playedCards.Concat(
                 opponent.GetComponentInChildren<Deck>().playedCards).ToList();
-            foreach (Card card in cardsToBurn)
-            {
-                burntCards.Add(card.cardData);
-            }
+            burnDeck.AddCards(cardsToBurn);
         }
 
         // Clear Played Cards
