@@ -5,8 +5,6 @@ using System.Collections.Generic;
 
 public class BurntDeck : Deck
 {
-    public Sprite faceDownSprite;
-
     //======================================================================
     public override void Start()
     {
@@ -33,7 +31,7 @@ public class BurntDeck : Deck
 
         if (cards.Count > 1 && spriteRenderer.sprite == null) 
         {
-            spriteRenderer.sprite = faceDownSprite;
+            spriteRenderer.sprite = cardPrefab.GetComponent<SpriteRenderer>().sprite;
         }
     }
 }
