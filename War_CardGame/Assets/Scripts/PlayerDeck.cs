@@ -11,7 +11,7 @@ public class PlayerDeck : Deck
     public override void Start()
     {
         base.Start();
-        COM_deck = GameObject.Find("COM").GetComponentInChildren<Deck>();
+        COM_deck = GameObject.Find("COM").transform.Find("Deck").gameObject.GetComponent<Deck>();
     }
 
     //======================================================================

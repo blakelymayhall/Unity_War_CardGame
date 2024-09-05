@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4092707222583254855, guid: 6679c7bf2e6e84ab6bc0206cacf6aa1d, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4092707222583254855, guid: 6679c7bf2e6e84ab6bc0206cacf6aa1d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -58,19 +58,20 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3073175664486242409, guid: 6679c7bf2e6e84ab6bc0206cacf6aa1d, type: 3}
+    - {fileID: 6807651154579605511, guid: 6679c7bf2e6e84ab6bc0206cacf6aa1d, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 7774367745059958014, guid: 6679c7bf2e6e84ab6bc0206cacf6aa1d, type: 3}
       insertIndex: -1
-      addedObject: {fileID: -2495474540489033110}
+      addedObject: {fileID: -8164244537930661413}
   m_SourcePrefab: {fileID: 100100000, guid: 6679c7bf2e6e84ab6bc0206cacf6aa1d, type: 3}
 --- !u!1 &5870113354896512213 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7774367745059958014, guid: 6679c7bf2e6e84ab6bc0206cacf6aa1d, type: 3}
   m_PrefabInstance: {fileID: 4220663093294774315}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &-2495474540489033110
+--- !u!114 &-8164244537930661413
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -84,3 +85,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   max_cards: 0
   cardPrefab: {fileID: 7774367745059958014, guid: 6679c7bf2e6e84ab6bc0206cacf6aa1d, type: 3}
+  playedCards: []
