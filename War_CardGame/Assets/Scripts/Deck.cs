@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Deck : MonoBehaviour
 {
@@ -31,7 +32,6 @@ public class Deck : MonoBehaviour
         //LoadCards();
         _Debug_LoadCards(max_cards);
         Shuffle();
-        _Debug_PrintDeck(cards);
     }
 
     //======================================================================
@@ -71,7 +71,7 @@ public class Deck : MonoBehaviour
     }
 
     //======================================================================
-    void _Debug_PrintDeck(List<CardData> cards)
+    public void _Debug_PrintDeck(List<CardData> cards)
     {
         foreach (CardData card in cards)
         {
@@ -99,6 +99,7 @@ public class Deck : MonoBehaviour
     //======================================================================
     public void DrawCard()
     {
+        Debug.Log("DrawCard");
         bool noCardsPlayed = playedCards.Count() == 0;
         if (noCardsPlayed)
         {
@@ -131,9 +132,12 @@ public class Deck : MonoBehaviour
     //======================================================================
     public void AddCardsToBurnPile()
     {
+        Debug.Log("AddCardsToBurn");
+        
         // Handle Win
         if (deck_owner.PlayerWin())
         {
+            Debug.Log("burning cards");
             List<Card> cardsToBurn = playedCards.Concat(
                 opponent.GetComponentInChildren<Deck>().playedCards).ToList();
             burnDeck.AddCards(cardsToBurn);
@@ -148,6 +152,19 @@ public class Deck : MonoBehaviour
             }
             playedCards.Clear();
         }
+    }
+
+    //======================================================================
+    public void ResetAfterRound()
+    {
+        cards = burnDeck.cards;
+        burnDeck.cards.Clear();
+        Shuffle();
+        spriteRenderer.sprite = cardPrefab.GetComponent<SpriteRenderer>().sprite;
+        Button reshuffleButton = GameObject.Find("ReshuffleButton").GetComponent<Button>();
+        Button drawButton = GameObject.Find("DrawButton").GetComponent<Button>();
+        reshuffleButton.enabled = false;
+        drawButton.enabled = true;
     }
 
     //======================================================================
@@ -180,6 +197,10 @@ public class Deck : MonoBehaviour
         cards.RemoveAt(cards.Count - 1);
         if (!cards.Any())
         {
+            Button reshuffleButton = GameObject.Find("ReshuffleButton").GetComponent<Button>();
+            Button drawButton = GameObject.Find("DrawButton").GetComponent<Button>();
+            reshuffleButton.enabled = true;
+            drawButton.enabled = false;
             spriteRenderer.sprite = null;
         }
     }
