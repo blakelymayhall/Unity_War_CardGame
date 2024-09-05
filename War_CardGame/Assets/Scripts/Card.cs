@@ -22,7 +22,7 @@ public class Card : MonoBehaviour
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
 
-        faceUpSprite = AssignFaceUpSprite(cardData.cardRank, cardData.cardSuit);
+        faceUpSprite = AssignFaceUpSprite(cardData);
         spriteRenderer.sprite = faceDownSprite;
 
         COM_deck = GameObject.Find("COM").GetComponentInChildren<Deck>();
@@ -89,18 +89,18 @@ public class Card : MonoBehaviour
     }
 
     //======================================================================
-    Sprite AssignFaceUpSprite(int cardRank, CardSuit cardSuit)
+    public static Sprite AssignFaceUpSprite(CardData cardData)
     {
         // Build up card file name to load from assets
         string cardFileName = "Assets/Sprites/Cards/card";
-        cardFileName += cardSuit.ToString();
-        cardFileName += cardRank switch
+        cardFileName += cardData.cardSuit.ToString();
+        cardFileName += cardData.cardRank switch
         {
             11 => "J",
             12 => "Q",
             13 => "K",
             14 => "A",
-            _ => cardRank.ToString(),
+            _ => cardData.cardRank.ToString(),
         };
         return UnityEditor.AssetDatabase.LoadAssetAtPath<Sprite>(
             cardFileName + ".png");

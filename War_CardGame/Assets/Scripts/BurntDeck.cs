@@ -29,9 +29,9 @@ public class BurntDeck : Deck
             cards.Add(card.cardData);
         }
 
-        if (cards.Count > 1 && spriteRenderer.sprite == null) 
+        if (cards.Count > 1) 
         {
-            spriteRenderer.sprite = cardPrefab.GetComponent<SpriteRenderer>().sprite;
+            spriteRenderer.sprite = Card.AssignFaceUpSprite(cards.Last());
         }
     }
 }
