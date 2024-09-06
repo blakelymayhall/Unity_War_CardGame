@@ -19,6 +19,7 @@ public class BurntDeck : Deck
     void OnMouseDown()
     {
         Debug.Log("Burnt Cards " + cards.Count);
+        _Debug_PrintDeck(cards);
     }
     
     //======================================================================

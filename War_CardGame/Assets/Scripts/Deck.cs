@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Deck : MonoBehaviour
 {
@@ -11,13 +12,14 @@ public class Deck : MonoBehaviour
     public GameObject cardPrefab;
     public List<Card> playedCards = new();
     public List<CardData> cards = new();
+    public Player deck_owner;
+    public Player opponent;
 
     //======================================================================
     protected Vector3 playedCardOffset;
     protected SpriteRenderer spriteRenderer;
-    protected Player deck_owner;
-    protected Player opponent;
     protected BurntDeck burnDeck; 
+    protected GameManager gameManager;
 
     //======================================================================
     public virtual void Start()
@@ -27,10 +29,17 @@ public class Deck : MonoBehaviour
         var players = FindObjectsOfType<Player>();
         opponent = players.FirstOrDefault(p => p != deck_owner);
         spriteRenderer = GetComponent<SpriteRenderer>();
+        gameManager = GameObject.Find("Player").GetComponent<GameManager>();
 
         //LoadCards();
         _Debug_LoadCards(max_cards);
         Shuffle();
+    }
+
+    //======================================================================
+    void OnMouseDown()
+    {
+        Debug.Log(cards.Count());
         _Debug_PrintDeck(cards);
     }
 
@@ -71,14 +80,13 @@ public class Deck : MonoBehaviour
     }
 
     //======================================================================
-    void _Debug_PrintDeck(List<CardData> cards)
+    public void _Debug_PrintDeck(List<CardData> cards)
     {
         foreach (CardData card in cards)
         {
-            Debug.Log(card.cardSuit);
-            Debug.Log(card.cardRank);
-            Debug.Log("--");
+            Debug.Log(card.cardRank + " " + card.cardSuit);
         }
+        Debug.Log("==");
     }
 
     //======================================================================
@@ -106,32 +114,17 @@ public class Deck : MonoBehaviour
             return;
         }
 
-        bool canPlayCard = playedCards.Last().cardData.isFaceUp && cards.Any();
-        if (canPlayCard && deck_owner.PlayerDraw())
+        // Only other way to get here is if there was a draw
+        if (cards.Count >= 2 && opponent.GetComponentInChildren<Deck>().cards.Count >= 2)
         {
-            if (cards.Count > 2)
-            {
-                InstantiateCard();
-                InstantiateCard();
-
-            }
-            else
-            {
-                // player lose
-                Debug.Log("Player Lose");
-            }
-        }
-        else if (canPlayCard && !deck_owner.PlayerDraw())
-        {
-            AddCardsToBurnPile();
+            InstantiateCard();
             InstantiateCard();
         }
     }
 
     //======================================================================
-    public void AddCardsToBurnPile()
+    public void AddCardsToBurnPile(bool finalCards = false)
     {
-        // Handle Win
         if (deck_owner.PlayerWin())
         {
             List<Card> cardsToBurn = playedCards.Concat(
@@ -139,8 +132,20 @@ public class Deck : MonoBehaviour
             burnDeck.AddCards(cardsToBurn);
         }
 
-        // Clear Played Cards
-        if (!deck_owner.PlayerDraw())
+        if (finalCards) 
+        {
+            if (deck_owner.PlayerDraw())
+            {
+                List<Card> cardsToBurn = playedCards;
+                burnDeck.AddCards(cardsToBurn);
+            }
+        }
+    }
+
+    //======================================================================
+    public void ClearPlayedCards(bool finalCards = false)
+    {
+        if (!deck_owner.PlayerDraw() || finalCards)
         {
             foreach (Card card in playedCards)
             {
@@ -148,6 +153,21 @@ public class Deck : MonoBehaviour
             }
             playedCards.Clear();
         }
+    }
+
+    //======================================================================
+    public void ResetAfterRound()
+    {
+        foreach (CardData cardData in burnDeck.cards)
+        {
+            cardData.isFaceUp = false;
+            cards.Add(cardData);
+        }
+        burnDeck.cards.Clear();
+        Shuffle();
+        spriteRenderer.sprite = cardPrefab.GetComponent<SpriteRenderer>().sprite;
+        burnDeck.GetComponent<SpriteRenderer>().sprite = null;
+        gameManager.ActivateDrawButton();
     }
 
     //======================================================================

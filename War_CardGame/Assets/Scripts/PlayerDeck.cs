@@ -15,15 +15,6 @@ public class PlayerDeck : Deck
     }
 
     //======================================================================
-    void OnMouseDown()
-    {
-        base.DrawCard();
-        COM_deck.DrawCard();
-
-        Debug.Log("Remaining Cards " + cards.Count);
-    }
-
-    //======================================================================
     public override void InstantiateCard()
     {
         base.InstantiateCard();

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEditor.Experimental.GraphView.GraphView;
 
@@ -16,6 +17,9 @@ public class Card : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private Deck COM_deck;
     private Deck Player_deck;
+    private GameManager gameManager;
+    private Player player;
+    private COM com;
 
     //======================================================================
     void Start()
@@ -27,6 +31,9 @@ public class Card : MonoBehaviour
 
         COM_deck = GameObject.Find("COM").GetComponentInChildren<Deck>();
         Player_deck = GameObject.Find("Player").GetComponentInChildren<Deck>();
+        gameManager = GameObject.Find("Player").GetComponent<GameManager>();
+        player = Player_deck.GetComponentInParent<Player>();
+        com = COM_deck.GetComponentInParent<COM>();
     }
 
     //======================================================================
@@ -41,7 +48,6 @@ public class Card : MonoBehaviour
     //======================================================================
     void OnMouseDown()
     {
-        Debug.Log(Player_deck.playedCards.Last().cardData.cardRank);
         bool ignore_click =
             isCOM ||
             cardData.isFaceUp ||
@@ -52,16 +58,45 @@ public class Card : MonoBehaviour
         }
 
         PlayCard();
+
+        // show reshuffle button after flipping card if either player is out of cards, or if there was a draw
+        // and one player doesn't have enough cards to finish a war
+        bool noRemainingCards = !Player_deck.cards.Any() || !COM_deck.cards.Any();
+        bool notEnoughCardsForWar = Player_deck.deck_owner.PlayerDraw() && 
+            (Player_deck.cards.Count <= 2 || COM_deck.cards.Count <= 2);
+        bool showReshuffle = noRemainingCards || notEnoughCardsForWar;
+        if (showReshuffle)
+        {
+            gameManager.ActivateReshuffleButton();
+        }
+
+        // If not enough cards for war - directly assign the winner and early return
+        if (notEnoughCardsForWar) 
+        {
+            if (Player_deck.cards.Count == COM_deck.cards.Count)
+            {
+                player.handOutcome = HandOutcomes.Draw;
+                com.handOutcome = HandOutcomes.Draw;
+            }
+            else if (Player_deck.cards.Count <= 2)
+            {
+                player.handOutcome = HandOutcomes.Lose;
+                com.handOutcome = HandOutcomes.Win;
+            }
+            else 
+            {
+                player.handOutcome = HandOutcomes.Win;
+                com.handOutcome = HandOutcomes.Lose;
+            }
+            return;
+        }
     }
 
     //======================================================================
-    public void PlayCard() 
+    public void PlayCard()
     {
         Player_deck.playedCards.Last().cardData.isFaceUp = true;
         COM_deck.playedCards.Last().cardData.isFaceUp = true;
-
-        Player player = Player_deck.GetComponentInParent<Player>();
-        COM com = COM_deck.GetComponentInParent<COM>();
 
         int player_card_rank =
             Player_deck.playedCards.Last().cardData.cardRank;
@@ -72,19 +107,16 @@ public class Card : MonoBehaviour
         {
             player.handOutcome = HandOutcomes.Win;
             com.handOutcome = HandOutcomes.Lose;
-            Debug.Log("Player Wins");
         }
         else if (player_card_rank == COM_card_rank)
         {
             player.handOutcome = HandOutcomes.Draw;
             com.handOutcome = HandOutcomes.Draw;
-            Debug.Log("Draw");
         }
-        else 
+        else
         {
             player.handOutcome = HandOutcomes.Lose;
             com.handOutcome = HandOutcomes.Win;
-            Debug.Log("COM Win");
         }
     }
 
