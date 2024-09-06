@@ -185,8 +185,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -3.638e-12, y: -261}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: 2, y: -301}
+  m_SizeDelta: {x: 262.11, y: 88.62}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &221667012
 MonoBehaviour:
@@ -232,7 +232,55 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 231562680}
+        m_TargetAssemblyTypeName: Deck, Assembly-CSharp
+        m_MethodName: AddCardsToBurnPile
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 2058466150}
+        m_TargetAssemblyTypeName: Deck, Assembly-CSharp
+        m_MethodName: AddCardsToBurnPile
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 231562680}
+        m_TargetAssemblyTypeName: Deck, Assembly-CSharp
+        m_MethodName: ClearPlayedCards
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2058466150}
+        m_TargetAssemblyTypeName: Deck, Assembly-CSharp
+        m_MethodName: ClearPlayedCards
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 231562680}
         m_TargetAssemblyTypeName: Deck, Assembly-CSharp
         m_MethodName: DrawCard
         m_Mode: 1
@@ -244,7 +292,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 231562680}
+      - m_Target: {fileID: 2058466150}
         m_TargetAssemblyTypeName: Deck, Assembly-CSharp
         m_MethodName: DrawCard
         m_Mode: 1
@@ -381,7 +429,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 580d362c4dbd44b6083f8f51a459c45e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  max_cards: 12
+  max_cards: 5
   cardPrefab: {fileID: 7774367745059958014, guid: 6679c7bf2e6e84ab6bc0206cacf6aa1d, type: 3}
   playedCards: []
 --- !u!1 &245321722 stripped
@@ -771,6 +819,7 @@ GameObject:
   m_Component:
   - component: {fileID: 987822941}
   - component: {fileID: 987822942}
+  - component: {fileID: 987822943}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -809,6 +858,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   handOutcome: 3
   playerName: Human
+--- !u!114 &987822943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 987822940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3242be7f7e9ff4685b3978827b91f04a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  reshuffleButton: {fileID: 0}
+  drawButton: {fileID: 0}
 --- !u!1 &1255991521
 GameObject:
   m_ObjectHideFlags: 0
@@ -827,7 +890,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1255991522
 RectTransform:
   m_ObjectHideFlags: 0
@@ -846,8 +909,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.000061035, y: -231}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: 1.9985064, y: -301}
+  m_SizeDelta: {x: 262.11, y: 88.62}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1255991523
 MonoBehaviour:
@@ -893,6 +956,54 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 231562680}
+        m_TargetAssemblyTypeName: Deck, Assembly-CSharp
+        m_MethodName: AddCardsToBurnPile
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 2058466150}
+        m_TargetAssemblyTypeName: Deck, Assembly-CSharp
+        m_MethodName: AddCardsToBurnPile
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 231562680}
+        m_TargetAssemblyTypeName: Deck, Assembly-CSharp
+        m_MethodName: ClearPlayedCards
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 2058466150}
+        m_TargetAssemblyTypeName: Deck, Assembly-CSharp
+        m_MethodName: ClearPlayedCards
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
       - m_Target: {fileID: 231562680}
         m_TargetAssemblyTypeName: Deck, Assembly-CSharp
         m_MethodName: ResetAfterRound
@@ -1349,7 +1460,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8164244537930661413, guid: 0479b939b7ecb4bc484e25e8305c17ab, type: 3}
       propertyPath: max_cards
-      value: 12
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 170847821575989100, guid: 0479b939b7ecb4bc484e25e8305c17ab, type: 3}
       propertyPath: m_RootOrder
