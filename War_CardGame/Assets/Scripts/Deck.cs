@@ -14,11 +14,11 @@ public class Deck : MonoBehaviour
     public List<CardData> cards = new();
     public Player deck_owner;
     public Player opponent;
+    public BurntDeck burnDeck; 
 
     //======================================================================
     protected Vector3 playedCardOffset;
     protected SpriteRenderer spriteRenderer;
-    protected BurntDeck burnDeck; 
     protected GameManager gameManager;
 
     //======================================================================
@@ -115,7 +115,7 @@ public class Deck : MonoBehaviour
         }
 
         // Only other way to get here is if there was a draw
-        if (cards.Count >= 2 && opponent.GetComponentInChildren<Deck>().cards.Count >= 2)
+        if (cards.Count >= 2)
         {
             InstantiateCard();
             InstantiateCard();
@@ -168,6 +168,16 @@ public class Deck : MonoBehaviour
         spriteRenderer.sprite = cardPrefab.GetComponent<SpriteRenderer>().sprite;
         burnDeck.GetComponent<SpriteRenderer>().sprite = null;
         gameManager.ActivateDrawButton();
+    }
+
+    //======================================================================
+    public void ResetAfterGameOver()
+    {
+        burnDeck.cards.Clear();
+        cards.Clear();
+        ClearPlayedCards(true);
+        playedCards.Clear();
+        _Debug_LoadCards(max_cards);
     }
 
     //======================================================================

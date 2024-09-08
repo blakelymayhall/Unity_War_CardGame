@@ -8,13 +8,15 @@ public class GameManager : MonoBehaviour
     //======================================================================
     public Button reshuffleButton;
     public Button drawButton;
+    public Button replayButton;
+    public int playerWinCount = 0;
+    public int comWinCount = 0;
 
     //======================================================================
     void Start()
     {
-        reshuffleButton = GameObject.Find("ReshuffleButton").GetComponent<Button>();
+        replayButton.gameObject.SetActive(false);
         reshuffleButton.gameObject.SetActive(false);
-        drawButton = GameObject.Find("DrawButton").GetComponent<Button>();
     }
 
     //======================================================================

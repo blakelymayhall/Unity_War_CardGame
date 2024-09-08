@@ -62,33 +62,46 @@ public class Card : MonoBehaviour
         // show reshuffle button after flipping card if either player is out of cards, or if there was a draw
         // and one player doesn't have enough cards to finish a war
         bool noRemainingCards = !Player_deck.cards.Any() || !COM_deck.cards.Any();
-        bool notEnoughCardsForWar = Player_deck.deck_owner.PlayerDraw() && 
-            (Player_deck.cards.Count <= 2 || COM_deck.cards.Count <= 2);
-        bool showReshuffle = noRemainingCards || notEnoughCardsForWar;
-        if (showReshuffle)
+        if (noRemainingCards)
         {
             gameManager.ActivateReshuffleButton();
         }
 
-        // If not enough cards for war - directly assign the winner and early return
+        // If not enough cards for war - directly assign the winner
+        bool notEnoughCardsForWar = Player_deck.deck_owner.PlayerDraw() && 
+            (Player_deck.cards.Count < 2 || COM_deck.cards.Count < 2);
         if (notEnoughCardsForWar) 
         {
             if (Player_deck.cards.Count == COM_deck.cards.Count)
             {
-                player.handOutcome = HandOutcomes.Draw;
-                com.handOutcome = HandOutcomes.Draw;
+                player.handOutcome = HandOutcomes.Win;
+                com.handOutcome = HandOutcomes.Win;
             }
-            else if (Player_deck.cards.Count <= 2)
+            else if (Player_deck.cards.Count < 2)
             {
                 player.handOutcome = HandOutcomes.Lose;
                 com.handOutcome = HandOutcomes.Win;
+                gameManager.ActivateReshuffleButton();
             }
             else 
             {
                 player.handOutcome = HandOutcomes.Win;
                 com.handOutcome = HandOutcomes.Lose;
+                gameManager.ActivateReshuffleButton();
             }
-            return;
+        }
+
+        bool playerWonGame = !COM_deck.burnDeck.cards.Any() && com.handOutcome == HandOutcomes.Lose &&
+            !COM_deck.cards.Any();
+        bool comWonGame = !Player_deck.burnDeck.cards.Any() && player.handOutcome == HandOutcomes.Lose &&
+            !Player_deck.cards.Any();
+        if (playerWonGame)
+        {
+            gameManager.playerWinCount++;
+        }
+        else if (comWonGame) 
+        {
+            gameManager.comWinCount++;
         }
     }
 
