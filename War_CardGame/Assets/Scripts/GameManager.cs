@@ -79,13 +79,18 @@ public class GameManager : MonoBehaviour
         {
             if (player.deck.cards.Count == com.deck.cards.Count)
             {
-                SetOutcome(HandOutcomes.Win, HandOutcomes.Win);
+                SetOutcome(HandOutcomes.Push, HandOutcomes.Push);
             }
             else
             {
-                SetOutcome(
-                    player.deck.cards.Count < 2 ? HandOutcomes.Lose : HandOutcomes.Win,
-                    player.deck.cards.Count < 2 ? HandOutcomes.Win : HandOutcomes.Lose);
+                if (player.deck.cards.Count < com.deck.cards.Count)
+                {
+                    SetOutcome(HandOutcomes.Lose, HandOutcomes.Win);
+                }
+                else
+                {
+                    SetOutcome(HandOutcomes.Win, HandOutcomes.Lose);
+                }
             }
         }
     }

@@ -44,7 +44,7 @@ public class Card : MonoBehaviour
     }
 
     //======================================================================
-    void FlipCards()
+    public void FlipCards()
     {
         gameManager.player.deck.playedCards.Last().cardData.isFaceUp = true;
         gameManager.com.deck.playedCards.Last().cardData.isFaceUp = true;

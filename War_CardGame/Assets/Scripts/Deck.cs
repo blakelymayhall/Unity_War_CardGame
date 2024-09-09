@@ -55,7 +55,7 @@ public class Deck : MonoBehaviour
     }
 
     //======================================================================
-    void LoadCards(List<CardData> cards_to_load = null)
+    public void LoadCards(List<CardData> cards_to_load = null)
     {
         // If didn't get cards to load, load standard 52 card deck
         // todo -- is this terrible? This works and its short
@@ -72,6 +72,13 @@ public class Deck : MonoBehaviour
                 cards.Add(card);
             }
             return;
+        }
+        else 
+        {
+            foreach (CardData cardData in cards_to_load)
+            {
+                cards.Add(cardData);
+            }
         }
     }
 
@@ -126,12 +133,12 @@ public class Deck : MonoBehaviour
             burnDeck.AddCards(cardsToBurn);
         }
 
-        if (finalCards) 
+        if (finalCards || deck_owner.PlayerPush()) 
         {
             // If there were not enough cards to war, and both players have equal 
             // remaining cards, this branch returns the played cards to each
             // player's hands
-            if (deck_owner.PlayerDraw())
+            if (deck_owner.PlayerDraw() || deck_owner.PlayerPush())
             {
                 List<Card> cardsToBurn = playedCards;
                 burnDeck.AddCards(cardsToBurn);

@@ -1256,7 +1256,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 231562680}
-        m_TargetAssemblyTypeName: Deck, Assembly-CSharp
+        m_TargetAssemblyTypeName: Deck, ScriptsAssembly
         m_MethodName: AddCardsToBurnPile
         m_Mode: 6
         m_Arguments:
@@ -1268,7 +1268,7 @@ MonoBehaviour:
           m_BoolArgument: 1
         m_CallState: 2
       - m_Target: {fileID: 2058466150}
-        m_TargetAssemblyTypeName: Deck, Assembly-CSharp
+        m_TargetAssemblyTypeName: Deck, ScriptsAssembly
         m_MethodName: AddCardsToBurnPile
         m_Mode: 6
         m_Arguments:

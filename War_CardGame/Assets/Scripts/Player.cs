@@ -28,4 +28,10 @@ public class Player : MonoBehaviour
         return handOutcome == HandOutcomes.Draw;
     }
 
+    //======================================================================
+    public bool PlayerPush()
+    {
+        return handOutcome == HandOutcomes.Push;
+    }
+
 }
