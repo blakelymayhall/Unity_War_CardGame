@@ -178,10 +178,13 @@ public class Deck : MonoBehaviour
     public void ResetAfterMatch()
     {
         burnDeck.cards.Clear();
+        burnDeck.GetComponent<SpriteRenderer>().sprite = null;
+        spriteRenderer.sprite = cardPrefab.GetComponent<SpriteRenderer>().sprite;
         cards.Clear();
         ClearPlayedCards(true);
-        playedCards.Clear();
         _Debug_LoadCards(max_cards);
+        Shuffle();
+        gameManager.ActivateDrawButton();
     }
 
     //======================================================================

@@ -729,6 +729,135 @@ public class RoundOutcomes
 
         yield return null;
     }
-    
+    //======================================================================
+
+    // Win / Loss and Replay Button
+    //======================================================================
+    [UnityTest]
+    public IEnumerator WinLoss_WinByHighRank()
+    {
+        // Clear out the decks 
+        ClearDecks();
+
+        // Add cards to the decks 
+        List<int> playerCardRanks = new() { 13, 3 };
+        AddCardsToDeck(gameManager.player.deck, playerCardRanks);
+        List<int> comCardRanks = new() { 14, 4 };
+        AddCardsToDeck(gameManager.com.deck, comCardRanks);
+
+        // Draw and play hand
+        DrawCardAndFlipCard();
+
+        Assert.IsTrue(gameManager.player.deck.playedCards.Last().cardData.cardRank == 3);
+        Assert.IsTrue(gameManager.com.deck.playedCards.Last().cardData.cardRank == 4);
+        Assert.IsTrue(gameManager.player.PlayerLose());
+        Assert.IsTrue(gameManager.com.PlayerWin());
+        Assert.IsTrue(gameManager.playerWinCount == 0);
+        Assert.IsTrue(gameManager.comWinCount == 0);
+        Assert.IsTrue(gameManager.player.burntDeck.cards.Count == 0);
+        Assert.IsTrue(gameManager.com.burntDeck.cards.Count == 0);
+        Assert.IsTrue(gameManager.player.deck.cards.Count == playerCardRanks.Count-1);
+        Assert.IsTrue(gameManager.com.deck.cards.Count == comCardRanks.Count-1);
+        Assert.IsTrue(gameManager.drawButton.IsActive());
+        Assert.IsFalse(gameManager.replayButton.IsActive());
+        Assert.IsFalse(gameManager.reshuffleButton.IsActive());
+
+        // Draw and play hand
+        DrawCardAndFlipCard();
+
+        Assert.IsTrue(gameManager.player.deck.playedCards.Last().cardData.cardRank == 13);
+        Assert.IsTrue(gameManager.com.deck.playedCards.Last().cardData.cardRank == 14);
+        Assert.IsTrue(gameManager.player.PlayerLose());
+        Assert.IsTrue(gameManager.com.PlayerWin());
+        Assert.IsTrue(gameManager.playerWinCount == 0);
+        Assert.IsTrue(gameManager.comWinCount == 1);
+        Assert.IsTrue(gameManager.player.burntDeck.cards.Count == 0);
+        Assert.IsTrue(gameManager.com.burntDeck.cards.Count == 2);
+        Assert.IsTrue(gameManager.player.deck.cards.Count == playerCardRanks.Count-2);
+        Assert.IsTrue(gameManager.com.deck.cards.Count == comCardRanks.Count-2);
+        Assert.IsFalse(gameManager.drawButton.IsActive());
+        Assert.IsTrue(gameManager.replayButton.IsActive());
+        Assert.IsFalse(gameManager.reshuffleButton.IsActive());
+
+        // Reshuffle
+        gameManager.replayButton.onClick.Invoke();
+
+        Assert.IsTrue(gameManager.player.deck.cards.Count == gameManager.player.deck.max_cards);
+        Assert.IsTrue(gameManager.com.deck.cards.Count == gameManager.com.deck.max_cards);
+        Assert.IsTrue(gameManager.player.deck.playedCards.Count == 0);
+        Assert.IsTrue(gameManager.com.deck.playedCards.Count == 0);     
+        Assert.IsTrue(gameManager.player.burntDeck.cards.Count == 0);
+        Assert.IsTrue(gameManager.com.burntDeck.cards.Count == 0);  
+        Assert.IsTrue(gameManager.drawButton.IsActive());
+        Assert.IsFalse(gameManager.replayButton.IsActive());
+        Assert.IsFalse(gameManager.reshuffleButton.IsActive());
+
+        yield return null;
+    }
+
+    [UnityTest]
+    public IEnumerator WinLoss_WinByDraw_InsufficientCards()
+    {
+        // Clear out the decks 
+        ClearDecks();
+
+        // Add cards to the decks 
+        List<int> playerCardRanks = new() { 4, 2, 13, 4 };
+        AddCardsToDeck(gameManager.player.deck, playerCardRanks);
+        List<int> comCardRanks = new() { 2, 14, 4 };
+        AddCardsToDeck(gameManager.com.deck, comCardRanks);
+        List<int> burnRanks = new() { 7, 7, 7 };
+        AddCardsToDeck(gameManager.player.burntDeck, burnRanks);
+
+        // Draw and play hand
+        DrawCardAndFlipCard();
+
+        Assert.IsTrue(gameManager.player.deck.playedCards.Last().cardData.cardRank == 4);
+        Assert.IsTrue(gameManager.com.deck.playedCards.Last().cardData.cardRank == 4);
+        Assert.IsTrue(gameManager.player.PlayerDraw());
+        Assert.IsTrue(gameManager.com.PlayerDraw());
+        Assert.IsTrue(gameManager.playerWinCount == 0);
+        Assert.IsTrue(gameManager.comWinCount == 0);
+        Assert.IsTrue(gameManager.player.burntDeck.cards.Count == 3);
+        Assert.IsTrue(gameManager.com.burntDeck.cards.Count == 0);
+        Assert.IsTrue(gameManager.player.deck.cards.Count == playerCardRanks.Count-1);
+        Assert.IsTrue(gameManager.com.deck.cards.Count == comCardRanks.Count-1);
+        Assert.IsTrue(gameManager.drawButton.IsActive());
+        Assert.IsFalse(gameManager.replayButton.IsActive());
+        Assert.IsFalse(gameManager.reshuffleButton.IsActive());
+
+        // Draw and play hand
+        DrawCardAndFlipCard();
+
+        Assert.IsTrue(gameManager.player.deck.playedCards.Last().cardData.cardRank == 2);
+        Assert.IsTrue(gameManager.com.deck.playedCards.Last().cardData.cardRank == 2);
+        Assert.IsTrue(gameManager.player.PlayerWin());
+        Assert.IsTrue(gameManager.com.PlayerLose());
+        Assert.IsTrue(gameManager.playerWinCount == 1);
+        Assert.IsTrue(gameManager.comWinCount == 0);
+        Assert.IsTrue(gameManager.player.burntDeck.cards.Count == 3);
+        Assert.IsTrue(gameManager.com.burntDeck.cards.Count == 0);
+        Assert.IsTrue(gameManager.player.deck.cards.Count == playerCardRanks.Count-3);
+        Assert.IsTrue(gameManager.com.deck.cards.Count == comCardRanks.Count-3);
+        Assert.IsFalse(gameManager.drawButton.IsActive());
+        Assert.IsTrue(gameManager.replayButton.IsActive());
+        Assert.IsFalse(gameManager.reshuffleButton.IsActive());
+
+        // Reshuffle
+        gameManager.replayButton.onClick.Invoke();
+
+        Assert.IsTrue(gameManager.player.deck.cards.Count == gameManager.player.deck.max_cards);
+        Assert.IsTrue(gameManager.com.deck.cards.Count == gameManager.com.deck.max_cards);
+        Assert.IsTrue(gameManager.player.deck.playedCards.Count == 0);
+        Assert.IsTrue(gameManager.com.deck.playedCards.Count == 0);     
+        Assert.IsTrue(gameManager.player.burntDeck.cards.Count == 0);
+        Assert.IsTrue(gameManager.com.burntDeck.cards.Count == 0);  
+        Assert.IsTrue(gameManager.drawButton.IsActive());
+        Assert.IsFalse(gameManager.replayButton.IsActive());
+        Assert.IsFalse(gameManager.reshuffleButton.IsActive());
+
+        yield return null;
+    }
+
     //======================================================================
 }
