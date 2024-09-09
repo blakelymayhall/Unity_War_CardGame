@@ -570,9 +570,9 @@ MonoBehaviour:
   max_cards: 5
   cardPrefab: {fileID: 7774367745059958014, guid: 6679c7bf2e6e84ab6bc0206cacf6aa1d, type: 3}
   playedCards: []
-  deck_owner: {fileID: 0}
-  opponent: {fileID: 0}
-  burnDeck: {fileID: 0}
+  deck_owner: {fileID: 987822942}
+  opponent: {fileID: 291015393}
+  burnDeck: {fileID: 789515017}
 --- !u!1 &245321722 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5870113354896512213, guid: 0479b939b7ecb4bc484e25e8305c17ab, type: 3}
@@ -624,6 +624,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9a86a18f51dc4ed5a19562ea12325c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  deck: {fileID: 2058466150}
+  burntDeck: {fileID: 13417433}
   handOutcome: 3
   playerName: Human
 --- !u!1 &519420028
@@ -1039,7 +1041,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 231562680}
         m_TargetAssemblyTypeName: Deck, Assembly-CSharp
-        m_MethodName: ResetAfterGameOver
+        m_MethodName: ResetAfterMatch
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1051,7 +1053,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 2058466150}
         m_TargetAssemblyTypeName: Deck, Assembly-CSharp
-        m_MethodName: ResetAfterGameOver
+        m_MethodName: ResetAfterMatch
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1146,6 +1148,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7942f847074624b1ab50c6c9abe607db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  deck: {fileID: 231562680}
+  burntDeck: {fileID: 789515017}
   handOutcome: 3
   playerName: Human
 --- !u!114 &987822943
@@ -1160,6 +1164,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3242be7f7e9ff4685b3978827b91f04a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 987822942}
+  com: {fileID: 291015393}
   reshuffleButton: {fileID: 1255991523}
   drawButton: {fileID: 221667012}
   replayButton: {fileID: 869841137}
@@ -1753,9 +1759,21 @@ PrefabInstance:
     m_TransformParent: {fileID: 291015392}
     m_Modifications:
     - target: {fileID: -8164244537930661413, guid: 0479b939b7ecb4bc484e25e8305c17ab, type: 3}
+      propertyPath: burnDeck
+      value: 
+      objectReference: {fileID: 13417433}
+    - target: {fileID: -8164244537930661413, guid: 0479b939b7ecb4bc484e25e8305c17ab, type: 3}
+      propertyPath: opponent
+      value: 
+      objectReference: {fileID: 987822942}
+    - target: {fileID: -8164244537930661413, guid: 0479b939b7ecb4bc484e25e8305c17ab, type: 3}
       propertyPath: max_cards
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: -8164244537930661413, guid: 0479b939b7ecb4bc484e25e8305c17ab, type: 3}
+      propertyPath: deck_owner
+      value: 
+      objectReference: {fileID: 291015393}
     - target: {fileID: 170847821575989100, guid: 0479b939b7ecb4bc484e25e8305c17ab, type: 3}
       propertyPath: m_RootOrder
       value: -1

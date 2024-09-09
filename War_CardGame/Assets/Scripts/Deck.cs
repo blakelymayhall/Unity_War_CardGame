@@ -24,10 +24,6 @@ public class Deck : MonoBehaviour
     //======================================================================
     public virtual void Start()
     {
-        deck_owner = GetComponentInParent<Player>();
-        burnDeck = deck_owner.transform.Find("BurntDeck").gameObject.GetComponent<BurntDeck>();
-        var players = FindObjectsOfType<Player>();
-        opponent = players.FirstOrDefault(p => p != deck_owner);
         spriteRenderer = GetComponent<SpriteRenderer>();
         gameManager = GameObject.Find("Player").GetComponent<GameManager>();
 
@@ -107,16 +103,14 @@ public class Deck : MonoBehaviour
     //======================================================================
     public void DrawCard()
     {
-        bool noCardsPlayed = playedCards.Count() == 0;
-        if (noCardsPlayed)
+        if (playedCards.Count() == 0)
         {
             InstantiateCard();
-            return;
         }
-
-        // Only other way to get here is if there was a draw
-        if (cards.Count >= 2)
+        else if (cards.Count >= 2)
         {
+            // Only other way to get here is if there was a draw on the 
+            // previous hand, and both players have sufficient cards to war
             InstantiateCard();
             InstantiateCard();
         }
@@ -134,6 +128,9 @@ public class Deck : MonoBehaviour
 
         if (finalCards) 
         {
+            // If there were not enough cards to war, and both players have equal 
+            // remaining cards, this branch returns the played cards to each
+            // player's hands
             if (deck_owner.PlayerDraw())
             {
                 List<Card> cardsToBurn = playedCards;
@@ -171,7 +168,7 @@ public class Deck : MonoBehaviour
     }
 
     //======================================================================
-    public void ResetAfterGameOver()
+    public void ResetAfterMatch()
     {
         burnDeck.cards.Clear();
         cards.Clear();
@@ -183,8 +180,7 @@ public class Deck : MonoBehaviour
     //======================================================================
     public virtual void InstantiateCard()
     {
-        bool noCardsPlayed = playedCards.Count() == 0;
-        if (noCardsPlayed)
+        if (playedCards.Count() == 0)
         {
             playedCardOffset = new Vector3(
                 2f * spriteRenderer.sprite.bounds.size.x,
