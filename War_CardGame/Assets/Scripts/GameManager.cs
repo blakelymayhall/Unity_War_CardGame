@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,14 +13,23 @@ public class GameManager : MonoBehaviour
     public Button reshuffleButton;
     public Button drawButton;
     public Button replayButton;
+    public GameObject handOutcomeMessage;
+    public GameObject matchOutcomeMessage;
     public int playerWinCount = 0;
     public int comWinCount = 0;
-
     //======================================================================
+    private const string handOutcome_msg_win = "Win";
+    private const string handOutcome_msg_loss = "Lose";
+    private const string matchOutcome_msg_win = "Game Over!\nYou Win!";
+    private const string matchOutcome_msg_loss = "Game Over!\nYou Lose!";
+    //======================================================================
+
     void Start()
     {
         replayButton.gameObject.SetActive(false);
         reshuffleButton.gameObject.SetActive(false);
+        handOutcomeMessage.SetActive(false);
+        matchOutcomeMessage.SetActive(false);
     }
 
     //======================================================================
@@ -36,6 +46,7 @@ public class GameManager : MonoBehaviour
         reshuffleButton.gameObject.SetActive(false);
         drawButton.gameObject.SetActive(false);
         replayButton.gameObject.SetActive(true);
+        matchOutcomeMessage.SetActive(false);
     }
 
     //======================================================================
@@ -115,11 +126,38 @@ public class GameManager : MonoBehaviour
             if(playerWonGame) 
             {
                 playerWinCount++;
+                StartCoroutine(ShowMessage(matchOutcomeMessage, matchOutcome_msg_win));
             }
             else 
             {
                 comWinCount++;
+                StartCoroutine(ShowMessage(matchOutcomeMessage, matchOutcome_msg_loss));
             }
         }
+        else 
+        {
+            if (player.handOutcome == HandOutcomes.Win)
+            {
+                StartCoroutine(ShowMessage(handOutcomeMessage, handOutcome_msg_win, 0.7f));
+            }
+            else if (player.handOutcome == HandOutcomes.Lose)
+            {
+                StartCoroutine(ShowMessage(handOutcomeMessage, handOutcome_msg_loss, 0.7f));
+            }
+        }
+    }
+    
+    //======================================================================
+    IEnumerator ShowMessage (GameObject go, string message, float delay = -1) 
+    {
+        var tm = go.GetComponent<TextMeshProUGUI>();
+        tm.text = message;
+        go.SetActive(true);
+        if (delay > 0)
+        {
+            yield return new WaitForSeconds(delay);
+            go.SetActive(false);
+        }
+        yield return null;
     }
 }
