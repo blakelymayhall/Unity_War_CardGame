@@ -4,6 +4,8 @@ using System.ComponentModel;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+
 
 public class Deck : MonoBehaviour
 {
@@ -15,6 +17,7 @@ public class Deck : MonoBehaviour
     public Player deck_owner;
     public Player opponent;
     public BurntDeck burnDeck; 
+    public GameObject cardCount;
 
     //======================================================================
     protected Vector3 playedCardOffset;
@@ -30,6 +33,9 @@ public class Deck : MonoBehaviour
         //LoadCards();
         _Debug_LoadCards(max_cards);
         Shuffle();
+
+        var tm = cardCount.GetComponent<TextMeshProUGUI>();
+        tm.text = "Cards:\n" + cards.Count;
     }
 
     //======================================================================
@@ -121,6 +127,8 @@ public class Deck : MonoBehaviour
             InstantiateCard();
             InstantiateCard();
         }
+
+        gameManager.UpdateCardCounter(cardCount, cards.Count);
     }
 
     //======================================================================
@@ -172,6 +180,7 @@ public class Deck : MonoBehaviour
         spriteRenderer.sprite = cardPrefab.GetComponent<SpriteRenderer>().sprite;
         burnDeck.GetComponent<SpriteRenderer>().sprite = null;
         gameManager.ActivateDrawButton();
+        gameManager.UpdateCardCounter(cardCount, cards.Count);
     }
 
     //======================================================================
@@ -185,23 +194,24 @@ public class Deck : MonoBehaviour
         _Debug_LoadCards(max_cards);
         Shuffle();
         gameManager.ActivateDrawButton();
+        gameManager.UpdateCardCounter(cardCount, cards.Count);
     }
 
     //======================================================================
-    public virtual void InstantiateCard()
+    public void InstantiateCard()
     {
         if (playedCards.Count() == 0)
         {
             playedCardOffset = new Vector3(
                 2f * spriteRenderer.sprite.bounds.size.x,
-                0,
+                deck_owner.isCOM ? -1f : 1f,
                 0);
         }
         else
         {
             playedCardOffset += new Vector3(
                 0.25f * spriteRenderer.sprite.bounds.size.x,
-                0,
+                deck_owner.isCOM ? -1f : 1f,
                 -1);
         }
 
@@ -211,7 +221,7 @@ public class Deck : MonoBehaviour
             GetComponent<Transform>()).GetComponent<Card>());
         playedCards.Last().name = "playedCard";
         playedCards.Last().cardData = cards.Last();
-        playedCards.Last().isCOM = true;
+        playedCards.Last().isCOM = deck_owner.isCOM;
 
         cards.RemoveAt(cards.Count - 1);
         if (!cards.Any())
