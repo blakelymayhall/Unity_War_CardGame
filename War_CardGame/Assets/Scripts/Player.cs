@@ -7,8 +7,17 @@ public class Player : MonoBehaviour
     //======================================================================
     public Deck deck;
     public BurntDeck burntDeck;
-    public HandOutcomes handOutcome = HandOutcomes.NoCardsPlayed;
-    public string playerName = "Human";
+    public HandOutcomes handOutcome;
+    public string playerName;
+    public bool isCOM;
+
+    //======================================================================
+    void Start()
+    {
+        isCOM = false;
+        playerName = "Human";
+        handOutcome = HandOutcomes.NoCardsPlayed;
+    }
 
     //======================================================================
     public bool PlayerWin()

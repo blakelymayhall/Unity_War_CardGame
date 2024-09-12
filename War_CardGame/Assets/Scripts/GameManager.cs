@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
     //======================================================================
     private const string handOutcome_msg_win = "Win";
     private const string handOutcome_msg_loss = "Lose";
+    private const string handOutcome_msg_push = "Push";
     private const string matchOutcome_msg_win = "Game Over!\nYou Win!";
     private const string matchOutcome_msg_loss = "Game Over!\nYou Lose!";
     //======================================================================
@@ -136,13 +137,13 @@ public class GameManager : MonoBehaviour
         }
         else 
         {
-            if (player.handOutcome == HandOutcomes.Win)
+            string outcomeMessage = player.PlayerWin() ? handOutcome_msg_win :
+                                    player.PlayerLose() ? handOutcome_msg_loss :
+                                    player.PlayerPush() ? handOutcome_msg_push : null;
+
+            if (outcomeMessage != null)
             {
-                StartCoroutine(ShowMessage(handOutcomeMessage, handOutcome_msg_win, 0.7f));
-            }
-            else if (player.handOutcome == HandOutcomes.Lose)
-            {
-                StartCoroutine(ShowMessage(handOutcomeMessage, handOutcome_msg_loss, 0.7f));
+                StartCoroutine(ShowMessage(handOutcomeMessage, outcomeMessage, 0.7f));
             }
         }
     }
@@ -159,5 +160,12 @@ public class GameManager : MonoBehaviour
             go.SetActive(false);
         }
         yield return null;
+    }
+
+    //======================================================================
+    public void UpdateCardCounter(GameObject go, int numCards)
+    {
+        var tm = go.GetComponent<TextMeshProUGUI>();
+        tm.text = "Cards:\n" + numCards;
     }
 }
