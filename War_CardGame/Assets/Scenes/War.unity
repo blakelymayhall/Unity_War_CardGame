@@ -287,6 +287,7 @@ MonoBehaviour:
   opponent: {fileID: 0}
   burnDeck: {fileID: 0}
   cardCount: {fileID: 0}
+  deckAnimator: {fileID: 0}
 --- !u!1 &221667010
 GameObject:
   m_ObjectHideFlags: 0
@@ -398,7 +399,7 @@ MonoBehaviour:
       - m_Target: {fileID: 231562686}
         m_TargetAssemblyTypeName: Deck, ScriptsAssembly
         m_MethodName: ClearPlayedCards
-        m_Mode: 6
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -408,9 +409,9 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 2058466150}
-        m_TargetAssemblyTypeName: Deck, Assembly-CSharp
+        m_TargetAssemblyTypeName: Deck, ScriptsAssembly
         m_MethodName: ClearPlayedCards
-        m_Mode: 6
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -489,6 +490,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 987822941}
     m_Modifications:
+    - target: {fileID: -448567580483061568, guid: 0479b939b7ecb4bc484e25e8305c17ab, type: 3}
+      propertyPath: cardPrefab
+      value: 
+      objectReference: {fileID: 7774367745059958014, guid: 6679c7bf2e6e84ab6bc0206cacf6aa1d, type: 3}
     - target: {fileID: 170847821575989100, guid: 0479b939b7ecb4bc484e25e8305c17ab, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -556,6 +561,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5870113354896512213, guid: 0479b939b7ecb4bc484e25e8305c17ab, type: 3}
   m_PrefabInstance: {fileID: 231562677}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &231562680 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: -448567580483061568, guid: 0479b939b7ecb4bc484e25e8305c17ab, type: 3}
+  m_PrefabInstance: {fileID: 231562677}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 231562679}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 861a861a148d448cb9fa6b2d2b16bce7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &231562686
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -575,6 +591,7 @@ MonoBehaviour:
   opponent: {fileID: 291015393}
   burnDeck: {fileID: 789515017}
   cardCount: {fileID: 1762803614}
+  deckAnimator: {fileID: 231562680}
 --- !u!1 &245321722 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5870113354896512213, guid: 0479b939b7ecb4bc484e25e8305c17ab, type: 3}
@@ -1229,6 +1246,7 @@ MonoBehaviour:
   opponent: {fileID: 0}
   burnDeck: {fileID: 0}
   cardCount: {fileID: 0}
+  deckAnimator: {fileID: 0}
 --- !u!1 &869841135
 GameObject:
   m_ObjectHideFlags: 0
@@ -1558,30 +1576,6 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 231562686}
         m_TargetAssemblyTypeName: Deck, ScriptsAssembly
-        m_MethodName: ClearPlayedCards
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 2058466150}
-        m_TargetAssemblyTypeName: Deck, Assembly-CSharp
-        m_MethodName: ClearPlayedCards
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 231562686}
-        m_TargetAssemblyTypeName: Deck, ScriptsAssembly
         m_MethodName: ResetAfterRound
         m_Mode: 1
         m_Arguments:
@@ -1595,6 +1589,30 @@ MonoBehaviour:
       - m_Target: {fileID: 2058466150}
         m_TargetAssemblyTypeName: Deck, Assembly-CSharp
         m_MethodName: ResetAfterRound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 231562686}
+        m_TargetAssemblyTypeName: Deck, ScriptsAssembly
+        m_MethodName: ClearPlayedCards
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2058466150}
+        m_TargetAssemblyTypeName: Deck, ScriptsAssembly
+        m_MethodName: ClearPlayedCards
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2329,6 +2347,14 @@ PrefabInstance:
       propertyPath: deck_owner
       value: 
       objectReference: {fileID: 291015393}
+    - target: {fileID: -8164244537930661413, guid: 0479b939b7ecb4bc484e25e8305c17ab, type: 3}
+      propertyPath: deckAnimator
+      value: 
+      objectReference: {fileID: 2058466151}
+    - target: {fileID: -448567580483061568, guid: 0479b939b7ecb4bc484e25e8305c17ab, type: 3}
+      propertyPath: cardPrefab
+      value: 
+      objectReference: {fileID: 7774367745059958014, guid: 6679c7bf2e6e84ab6bc0206cacf6aa1d, type: 3}
     - target: {fileID: 170847821575989100, guid: 0479b939b7ecb4bc484e25e8305c17ab, type: 3}
       propertyPath: m_RootOrder
       value: -1
@@ -2377,7 +2403,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Deck
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 9171328029010868520, guid: 0479b939b7ecb4bc484e25e8305c17ab, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -2396,5 +2423,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8a35f028a3e3b4bda8dae7ac5db51377, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2058466151 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: -448567580483061568, guid: 0479b939b7ecb4bc484e25e8305c17ab, type: 3}
+  m_PrefabInstance: {fileID: 2058466148}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 861a861a148d448cb9fa6b2d2b16bce7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

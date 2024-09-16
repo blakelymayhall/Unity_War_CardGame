@@ -21,7 +21,7 @@ public class BurntDeck : Deck
         Debug.Log("Burnt Cards " + cards.Count);
         _Debug_PrintDeck(cards);
     }
-    
+
     //======================================================================
     public void AddCards(List<Card> cardsToBurn)
     {
@@ -29,7 +29,10 @@ public class BurntDeck : Deck
         {
             cards.Add(card.cardData);
         }
+    }
 
+    public void UpdateSprite()
+    {
         if (cards.Count > 1) 
         {
             spriteRenderer.sprite = Card.AssignFaceUpSprite(cards.Last());
