@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using PlasticPipe.PlasticProtocol.Messages;
 
 public class GameManager : MonoBehaviour
 {
@@ -39,6 +40,7 @@ public class GameManager : MonoBehaviour
         reshuffleButton.gameObject.SetActive(true);
         drawButton.gameObject.SetActive(false);
         replayButton.gameObject.SetActive(false);
+        matchOutcomeMessage.SetActive(false);
     }
 
     //======================================================================
@@ -56,6 +58,13 @@ public class GameManager : MonoBehaviour
         reshuffleButton.gameObject.SetActive(false);
         drawButton.gameObject.SetActive(true);
         replayButton.gameObject.SetActive(false);
+        matchOutcomeMessage.SetActive(false);
+    }
+
+    //======================================================================
+    public void DisableDrawButton()
+    {
+        drawButton.gameObject.SetActive(false);
     }
 
     //======================================================================
@@ -81,6 +90,10 @@ public class GameManager : MonoBehaviour
         if (!player.deck.cards.Any() || !com.deck.cards.Any())
         {
             ActivateReshuffleButton();
+        }
+        else 
+        {
+            ActivateDrawButton();
         }
 
         // A war where one or both players cannot finish the war requires special attention:

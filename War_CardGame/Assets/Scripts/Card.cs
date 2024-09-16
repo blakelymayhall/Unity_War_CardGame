@@ -11,9 +11,10 @@ public class Card : MonoBehaviour
     public Sprite faceDownSprite;
     public CardData cardData = new();
     public bool isCOM;
+    public Sprite faceUpSprite;
+    public CardAnimator cardAnimator;
 
     //======================================================================
-    private Sprite faceUpSprite;
     private SpriteRenderer spriteRenderer;
     private GameManager gameManager;
 
@@ -24,11 +25,15 @@ public class Card : MonoBehaviour
         faceUpSprite = AssignFaceUpSprite(cardData);
         spriteRenderer.sprite = faceDownSprite;
         gameManager = GameObject.Find("Player").GetComponent<GameManager>();
+        cardAnimator.GetComponent<CardAnimator>();
     }
 
     //======================================================================
     void OnMouseDown()
     {
+        Debug.Log(isCOM);
+        Debug.Log(cardData.isFaceUp);
+        Debug.Log(cardData != gameManager.player.deck.playedCards.Last().cardData);
         bool ignore_click =
             isCOM ||
             cardData.isFaceUp ||
@@ -37,20 +42,10 @@ public class Card : MonoBehaviour
         {
             return;
         }
-
-        FlipCards();
+        
+        cardAnimator.StartFlipCard();
         gameManager.SetHandWinLoss();
         gameManager.CheckMatchWinLoss();
-    }
-
-    //======================================================================
-    public void FlipCards()
-    {
-        gameManager.player.deck.playedCards.Last().cardData.isFaceUp = true;
-        gameManager.com.deck.playedCards.Last().cardData.isFaceUp = true;
-        spriteRenderer.sprite = faceUpSprite;
-        gameManager.com.deck.playedCards.Last().GetComponent<SpriteRenderer>().sprite = 
-            gameManager.com.deck.playedCards.Last().faceUpSprite;
     }
 
     //======================================================================

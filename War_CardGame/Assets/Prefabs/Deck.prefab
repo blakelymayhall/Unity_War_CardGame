@@ -59,9 +59,13 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 3073175664486242409, guid: 6679c7bf2e6e84ab6bc0206cacf6aa1d, type: 3}
     - {fileID: 6807651154579605511, guid: 6679c7bf2e6e84ab6bc0206cacf6aa1d, type: 3}
+    - {fileID: 5032162322683592963, guid: 6679c7bf2e6e84ab6bc0206cacf6aa1d, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7774367745059958014, guid: 6679c7bf2e6e84ab6bc0206cacf6aa1d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -448567580483061568}
     - targetCorrespondingSourceObject: {fileID: 7774367745059958014, guid: 6679c7bf2e6e84ab6bc0206cacf6aa1d, type: 3}
       insertIndex: -1
       addedObject: {fileID: -8164244537930661413}
@@ -71,6 +75,19 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7774367745059958014, guid: 6679c7bf2e6e84ab6bc0206cacf6aa1d, type: 3}
   m_PrefabInstance: {fileID: 4220663093294774315}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &-448567580483061568
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5870113354896512213}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 861a861a148d448cb9fa6b2d2b16bce7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cardPrefab: {fileID: 7774367745059958014, guid: 6679c7bf2e6e84ab6bc0206cacf6aa1d, type: 3}
 --- !u!114 &-8164244537930661413
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -86,3 +103,9 @@ MonoBehaviour:
   max_cards: 0
   cardPrefab: {fileID: 7774367745059958014, guid: 6679c7bf2e6e84ab6bc0206cacf6aa1d, type: 3}
   playedCards: []
+  deck_owner: {fileID: 0}
+  opponent: {fileID: 0}
+  burnDeck: {fileID: 0}
+  cardCount: {fileID: 0}
+  deckAnimator: {fileID: 0}
+  spriteRenderer: {fileID: 0}

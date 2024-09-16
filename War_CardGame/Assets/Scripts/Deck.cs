@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.PlayerLoop;
 
 
 public class Deck : MonoBehaviour
@@ -18,17 +19,21 @@ public class Deck : MonoBehaviour
     public Player opponent;
     public BurntDeck burnDeck; 
     public GameObject cardCount;
-
+    public DeckAnimator deckAnimator;
+    public SpriteRenderer spriteRenderer;
+    
     //======================================================================
     protected Vector3 playedCardOffset;
-    protected SpriteRenderer spriteRenderer;
     protected GameManager gameManager;
-
     //======================================================================
     public virtual void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         gameManager = GameObject.Find("Player").GetComponent<GameManager>();
+        playedCardOffset = new Vector3(
+                2f * spriteRenderer.sprite.bounds.size.x,
+                deck_owner.isCOM ? -1f : 1f,
+                0);
 
         //LoadCards();
         _Debug_LoadCards(max_cards);
@@ -101,6 +106,7 @@ public class Deck : MonoBehaviour
     //======================================================================
     public void Shuffle()
     {
+        deckAnimator.StartShuffle();
         System.Random random = new System.Random();
         int n = cards.Count;
         while (n > 1)
@@ -116,6 +122,9 @@ public class Deck : MonoBehaviour
     //======================================================================
     public void DrawCard()
     {
+        if(!GetComponentInParent<Deck>().deck_owner.isCOM)
+            gameManager.DisableDrawButton();
+            
         if (playedCards.Count() == 0)
         {
             InstantiateCard();
@@ -132,37 +141,41 @@ public class Deck : MonoBehaviour
     }
 
     //======================================================================
-    public void AddCardsToBurnPile(bool finalCards = false)
+    List<Card> GetCardsToBurn()
     {
+        List<Card> cardsToBurn = new(); 
         if (deck_owner.PlayerWin())
         {
-            List<Card> cardsToBurn = playedCards.Concat(
-                opponent.GetComponentInChildren<Deck>().playedCards).ToList();
-            burnDeck.AddCards(cardsToBurn);
+            cardsToBurn = playedCards.Concat(opponent.GetComponentInChildren<Deck>().playedCards).ToList();
+            
         }
-
-        if (finalCards || deck_owner.PlayerPush()) 
+        else if (deck_owner.PlayerPush())
         {
-            // If there were not enough cards to war, and both players have equal 
-            // remaining cards, this branch returns the played cards to each
-            // player's hands
-            if (deck_owner.PlayerDraw() || deck_owner.PlayerPush())
+            cardsToBurn = playedCards;
+        }
+        
+        return cardsToBurn;
+    }
+
+    //======================================================================
+    public void AddCardsToBurnPile(bool finalCards = false)
+    {
+        List<Card> cardsToBurn = GetCardsToBurn();
+        burnDeck.AddCards(GetCardsToBurn());
+        if (!finalCards)
+        {
+            foreach (Card card in cardsToBurn)
             {
-                List<Card> cardsToBurn = playedCards;
-                burnDeck.AddCards(cardsToBurn);
+                card.cardAnimator.StartMoveCard(burnDeck.gameObject.transform.position, 20f, true);
             }
         }
     }
 
     //======================================================================
-    public void ClearPlayedCards(bool finalCards = false)
+    public void ClearPlayedCards()
     {
-        if (!deck_owner.PlayerDraw() || finalCards)
+        if (!deck_owner.PlayerDraw())
         {
-            foreach (Card card in playedCards)
-            {
-                Destroy(card.gameObject);
-            }
             playedCards.Clear();
         }
     }
@@ -170,17 +183,28 @@ public class Deck : MonoBehaviour
     //======================================================================
     public void ResetAfterRound()
     {
+        if (deck_owner.PlayerWin() || deck_owner.PlayerPush())
+        {
+            List<Card> cardsToMove = GetCardsToBurn();
+            foreach (Card card in cardsToMove)
+            {
+                card.cardAnimator.StartMoveCard(transform.position, 20f, true);
+            }
+        }
+
         foreach (CardData cardData in burnDeck.cards)
         {
             cardData.isFaceUp = false;
             cards.Add(cardData);
         }
+
         burnDeck.cards.Clear();
-        Shuffle();
         spriteRenderer.sprite = cardPrefab.GetComponent<SpriteRenderer>().sprite;
         burnDeck.GetComponent<SpriteRenderer>().sprite = null;
-        gameManager.ActivateDrawButton();
         gameManager.UpdateCardCounter(cardCount, cards.Count);
+        if(!GetComponentInParent<Deck>().deck_owner.isCOM)
+            gameManager.ActivateDrawButton();
+        Shuffle();
     }
 
     //======================================================================
@@ -190,7 +214,11 @@ public class Deck : MonoBehaviour
         burnDeck.GetComponent<SpriteRenderer>().sprite = null;
         spriteRenderer.sprite = cardPrefab.GetComponent<SpriteRenderer>().sprite;
         cards.Clear();
-        ClearPlayedCards(true);
+        foreach (Card card in playedCards)
+        {
+            Destroy(card.gameObject);
+        }
+        playedCards.Clear();
         _Debug_LoadCards(max_cards);
         Shuffle();
         gameManager.ActivateDrawButton();
@@ -200,28 +228,25 @@ public class Deck : MonoBehaviour
     //======================================================================
     public void InstantiateCard()
     {
+        Vector3 destination;
         if (playedCards.Count() == 0)
         {
-            playedCardOffset = new Vector3(
-                2f * spriteRenderer.sprite.bounds.size.x,
-                deck_owner.isCOM ? -1f : 1f,
-                0);
+            destination = playedCardOffset;
         }
         else
         {
-            playedCardOffset += new Vector3(
-                0.25f * spriteRenderer.sprite.bounds.size.x,
-                deck_owner.isCOM ? -1f : 1f,
-                -1);
+            destination = playedCardOffset + new Vector3(0.25f*playedCards.Count(), 0, -1);
         }
 
-        playedCards.Add(Instantiate(cardPrefab,
-            transform.position + playedCardOffset,
+        Card newCard = Instantiate(cardPrefab,
+            transform.position,
             Quaternion.identity,
-            GetComponent<Transform>()).GetComponent<Card>());
-        playedCards.Last().name = "playedCard";
-        playedCards.Last().cardData = cards.Last();
-        playedCards.Last().isCOM = deck_owner.isCOM;
+            GetComponent<Transform>()).GetComponent<Card>();
+        newCard.name = "playedCard";
+        newCard.cardData = cards.Last();
+        newCard.isCOM = deck_owner.isCOM;
+        newCard.cardAnimator.StartMoveCard(transform.position+destination, 10f);
+        playedCards.Add(newCard);
 
         cards.RemoveAt(cards.Count - 1);
         if (!cards.Any())
