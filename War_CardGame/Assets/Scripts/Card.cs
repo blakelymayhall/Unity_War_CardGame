@@ -1,9 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class Card : MonoBehaviour
 {
@@ -23,7 +19,7 @@ public class Card : MonoBehaviour
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         faceUpSprite = AssignFaceUpSprite(cardData);
-        spriteRenderer.sprite = faceDownSprite;
+        spriteRenderer.sprite = GetComponentInParent<Deck>().faceDownSprite;
         gameManager = GameObject.Find("Player").GetComponent<GameManager>();
         cardAnimator.GetComponent<CardAnimator>();
     }
@@ -52,7 +48,7 @@ public class Card : MonoBehaviour
     public static Sprite AssignFaceUpSprite(CardData cardData)
     {
         // Build up card file name to load from assets
-        string cardFileName = "Assets/Sprites/Cards/card";
+        string cardFileName = "Cards/card";
         cardFileName += cardData.cardSuit.ToString();
         cardFileName += cardData.cardRank switch
         {
@@ -62,7 +58,7 @@ public class Card : MonoBehaviour
             14 => "A",
             _ => cardData.cardRank.ToString(),
         };
-        return UnityEditor.AssetDatabase.LoadAssetAtPath<Sprite>(
-            cardFileName + ".png");
+        return Resources.Load<Sprite>(
+            cardFileName);
     }
 }

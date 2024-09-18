@@ -1,11 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
-using UnityEngine.PlayerLoop;
 
 
 public class Deck : MonoBehaviour
@@ -21,11 +17,12 @@ public class Deck : MonoBehaviour
     public GameObject cardCount;
     public DeckAnimator deckAnimator;
     public SpriteRenderer spriteRenderer;
-    
+    public Sprite faceDownSprite;
     //======================================================================
     protected Vector3 playedCardOffset;
     protected GameManager gameManager;
     //======================================================================
+
     public virtual void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -38,9 +35,6 @@ public class Deck : MonoBehaviour
         //LoadCards();
         _Debug_LoadCards(max_cards);
         Shuffle();
-
-        var tm = cardCount.GetComponent<TextMeshProUGUI>();
-        tm.text = "Cards:\n" + cards.Count;
     }
 
     //======================================================================
@@ -63,6 +57,9 @@ public class Deck : MonoBehaviour
             }
             cards.Add(card);
         }
+
+        var tm = cardCount.GetComponent<TextMeshProUGUI>();
+        tm.text = "Cards:\n" + cards.Count;
     }
 
     //======================================================================
@@ -199,7 +196,7 @@ public class Deck : MonoBehaviour
         }
 
         burnDeck.cards.Clear();
-        spriteRenderer.sprite = cardPrefab.GetComponent<SpriteRenderer>().sprite;
+        spriteRenderer.sprite = faceDownSprite;
         burnDeck.GetComponent<SpriteRenderer>().sprite = null;
         gameManager.UpdateCardCounter(cardCount, cards.Count);
         if(!GetComponentInParent<Deck>().deck_owner.isCOM)
@@ -212,7 +209,7 @@ public class Deck : MonoBehaviour
     {
         burnDeck.cards.Clear();
         burnDeck.GetComponent<SpriteRenderer>().sprite = null;
-        spriteRenderer.sprite = cardPrefab.GetComponent<SpriteRenderer>().sprite;
+        spriteRenderer.sprite = faceDownSprite;
         cards.Clear();
         foreach (Card card in playedCards)
         {

@@ -1,10 +1,8 @@
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using PlasticPipe.PlasticProtocol.Messages;
 
 public class GameManager : MonoBehaviour
 {

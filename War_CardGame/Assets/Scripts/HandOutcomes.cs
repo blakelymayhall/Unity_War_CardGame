@@ -1,5 +1,4 @@
-﻿using System;
-public enum HandOutcomes
+﻿public enum HandOutcomes
 {
     Win,
     Lose,

@@ -1,5 +1,4 @@
-﻿using System;
-public enum CardSuit
+﻿public enum CardSuit
 {
     Clubs,
     Spades,
