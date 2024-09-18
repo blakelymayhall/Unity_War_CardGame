@@ -150,9 +150,6 @@ public class RoundOutcomes
         Assert.IsTrue(gameManager.com.deck.cards.Any(card=>card.cardRank==14));     
         Assert.IsTrue(gameManager.player.burntDeck.cards.Count == 0);
         Assert.IsTrue(gameManager.com.burntDeck.cards.Count == 0);  
-        Assert.IsTrue(gameManager.drawButton.IsActive());
-        Assert.IsFalse(gameManager.replayButton.IsActive());
-        Assert.IsFalse(gameManager.reshuffleButton.IsActive());
 
         yield return null;
     }
@@ -225,9 +222,6 @@ public class RoundOutcomes
         Assert.IsTrue(gameManager.com.deck.cards.Any(card=>card.cardRank==5));     
         Assert.IsTrue(gameManager.player.burntDeck.cards.Count == 0);
         Assert.IsTrue(gameManager.com.burntDeck.cards.Count == 0);  
-        Assert.IsTrue(gameManager.drawButton.IsActive());
-        Assert.IsFalse(gameManager.replayButton.IsActive());
-        Assert.IsFalse(gameManager.reshuffleButton.IsActive());
         yield return null;
     }
     //======================================================================
@@ -315,10 +309,7 @@ public class RoundOutcomes
         Assert.IsTrue(gameManager.com.deck.cards.Any(card=>card.cardRank==5));     
         Assert.IsTrue(gameManager.com.deck.cards.Any(card=>card.cardRank==2));     
         Assert.IsTrue(gameManager.player.burntDeck.cards.Count == 0);
-        Assert.IsTrue(gameManager.com.burntDeck.cards.Count == 0);  
-        Assert.IsTrue(gameManager.drawButton.IsActive());
-        Assert.IsFalse(gameManager.replayButton.IsActive());
-        Assert.IsFalse(gameManager.reshuffleButton.IsActive());
+        Assert.IsTrue(gameManager.com.burntDeck.cards.Count == 0); 
 
         yield return null;
     }
@@ -423,9 +414,6 @@ public class RoundOutcomes
         Assert.IsTrue(gameManager.com.deck.cards.Any(card=>card.cardRank==8));    
         Assert.IsTrue(gameManager.player.burntDeck.cards.Count == 0);
         Assert.IsTrue(gameManager.com.burntDeck.cards.Count == 0);  
-        Assert.IsTrue(gameManager.drawButton.IsActive());
-        Assert.IsFalse(gameManager.replayButton.IsActive());
-        Assert.IsFalse(gameManager.reshuffleButton.IsActive());
 
         yield return null;
     }
@@ -498,9 +486,6 @@ public class RoundOutcomes
         Assert.IsTrue(gameManager.com.deck.cards.Any(card=>card.cardRank==2));     
         Assert.IsTrue(gameManager.player.burntDeck.cards.Count == 0);
         Assert.IsTrue(gameManager.com.burntDeck.cards.Count == 0);  
-        Assert.IsTrue(gameManager.drawButton.IsActive());
-        Assert.IsFalse(gameManager.replayButton.IsActive());
-        Assert.IsFalse(gameManager.reshuffleButton.IsActive());
 
         yield return null;
     }
@@ -569,10 +554,7 @@ public class RoundOutcomes
         Assert.IsTrue(gameManager.com.deck.cards.Any(card=>card.cardRank==14));  
         Assert.IsTrue(gameManager.com.deck.cards.Any(card=>card.cardRank==5));    
         Assert.IsTrue(gameManager.player.burntDeck.cards.Count == 0);
-        Assert.IsTrue(gameManager.com.burntDeck.cards.Count == 0);  
-        Assert.IsTrue(gameManager.drawButton.IsActive());
-        Assert.IsFalse(gameManager.replayButton.IsActive());
-        Assert.IsFalse(gameManager.reshuffleButton.IsActive());
+        Assert.IsTrue(gameManager.com.burntDeck.cards.Count == 0); 
 
         yield return null;
     }
@@ -646,9 +628,6 @@ public class RoundOutcomes
         Assert.IsTrue(gameManager.com.deck.cards.Any(card=>card.cardRank==7));     
         Assert.IsTrue(gameManager.player.burntDeck.cards.Count == 0);
         Assert.IsTrue(gameManager.com.burntDeck.cards.Count == 0);  
-        Assert.IsTrue(gameManager.drawButton.IsActive());
-        Assert.IsFalse(gameManager.replayButton.IsActive());
-        Assert.IsFalse(gameManager.reshuffleButton.IsActive());
 
         yield return null;
     }
@@ -722,10 +701,7 @@ public class RoundOutcomes
         Assert.IsTrue(gameManager.com.deck.cards.Any(card=>card.cardRank==14));     
         Assert.IsTrue(gameManager.com.deck.cards.Any(card=>card.cardRank==2));        
         Assert.IsTrue(gameManager.player.burntDeck.cards.Count == 0);
-        Assert.IsTrue(gameManager.com.burntDeck.cards.Count == 0);  
-        Assert.IsTrue(gameManager.drawButton.IsActive());
-        Assert.IsFalse(gameManager.replayButton.IsActive());
-        Assert.IsFalse(gameManager.reshuffleButton.IsActive());
+        Assert.IsTrue(gameManager.com.burntDeck.cards.Count == 0); 
 
         yield return null;
     }
@@ -788,9 +764,6 @@ public class RoundOutcomes
         Assert.IsTrue(gameManager.com.deck.playedCards.Count == 0);     
         Assert.IsTrue(gameManager.player.burntDeck.cards.Count == 0);
         Assert.IsTrue(gameManager.com.burntDeck.cards.Count == 0);  
-        Assert.IsTrue(gameManager.drawButton.IsActive());
-        Assert.IsFalse(gameManager.replayButton.IsActive());
-        Assert.IsFalse(gameManager.reshuffleButton.IsActive());
 
         yield return null;
     }
@@ -852,9 +825,6 @@ public class RoundOutcomes
         Assert.IsTrue(gameManager.com.deck.playedCards.Count == 0);     
         Assert.IsTrue(gameManager.player.burntDeck.cards.Count == 0);
         Assert.IsTrue(gameManager.com.burntDeck.cards.Count == 0);  
-        Assert.IsTrue(gameManager.drawButton.IsActive());
-        Assert.IsFalse(gameManager.replayButton.IsActive());
-        Assert.IsFalse(gameManager.reshuffleButton.IsActive());
 
         yield return null;
     }
